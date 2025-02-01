@@ -1,0 +1,69 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
+using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
+using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
+
+namespace SiwanDoctorAPI.DbConnection
+{
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        public class ApplicationUser : IdentityUser<int>
+        {
+            // Add your custom properties
+            public UserType UserType { get; set; }
+            public string? FirstName { get; set; } // f_name
+            public string? LastName { get; set; } // l_name
+            public string? ISDCode { get; set; } // isd_code
+            public string? Gender { get; set; } // gender
+            public DateTime DateOfBirth { get; set; } // dob
+            public string? RegistrationNo { get; set; }
+        }
+
+        public DbSet<Doctor_Details> Doctor_Details { get; set; }
+        public DbSet<Patient_Details> Patients_Details { get; set; }
+
+        public enum UserType
+        {
+            Doctor = 1,
+            Patient = 2,
+            Staff = 3
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Configure Identity tables to use int keys
+            builder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd(); // Auto-increment
+            });
+
+            builder.Entity<IdentityRole<int>>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd(); // Auto-increment
+            });
+            builder.Entity<Doctor_Details>()
+        .Property(d => d.OpdFee)
+        .HasColumnType("decimal(18,2)");
+
+            builder.Entity<Doctor_Details>()
+                .Property(d => d.VideoFee)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Entity<Doctor_Details>()
+                .Property(d => d.EmergencyFee)
+                .HasColumnType("decimal(18,2)");
+            // Add any other model configurations here
+        }
+    }
+}

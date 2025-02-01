@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "Cjxhe/k+GZNG8bS8zn1IWrpjoIXh/9HJu3cplcAqItk=",
+  "Source": "SiwanDoctorAPI",
+  "BasePath": "_content/SiwanDoctorAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "SiwanDoctorAPI\\wwwroot",
+      "Source": "SiwanDoctorAPI",
+      "ContentRoot": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\",
+      "BasePath": "_content/SiwanDoctorAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg",
+      "SourceId": "SiwanDoctorAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\",
+      "BasePath": "_content/SiwanDoctorAPI",
+      "RelativePath": "uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "cacy4h7une",
+      "Integrity": "TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.cacy4h7une.jpg",
+      "AssetFile": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "39328"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Feb 2025 13:43:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cacy4h7une"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg",
+      "AssetFile": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "39328"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 01 Feb 2025 13:43:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88="
+        }
+      ]
+    }
+  ]
+}

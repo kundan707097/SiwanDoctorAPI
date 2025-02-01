@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\wwwroot\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg",
+      "PackagePath": "staticwebassets\\uploads\\4\\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.SiwanDoctorAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.SiwanDoctorAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.SiwanDoctorAPI.props",
+      "PackagePath": "build\\SiwanDoctorAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.SiwanDoctorAPI.props",
+      "PackagePath": "buildMultiTargeting\\SiwanDoctorAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.SiwanDoctorAPI.props",
+      "PackagePath": "buildTransitive\\SiwanDoctorAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,22 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\4\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>SiwanDoctorAPI</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/SiwanDoctorAPI</BasePath>
+      <RelativePath>uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>cacy4h7une</Fingerprint>
+      <Integrity>TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\4\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+  </ItemGroup>
+</Project>
