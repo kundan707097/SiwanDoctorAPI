@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.DbConnection;
+using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
 using SiwanDoctorAPI.Model.InputDTOModel.PatientInputDTO;
 using SiwanDoctorAPI.Model.InputDTOModel.UpdateInputDTO;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
@@ -24,9 +25,11 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
 
         public async Task<UpdatePatientResponse> UpdatePatientDetails(UpdatePatientModel updatePatientModel)
         {
-            var existingUser = await _userManager.FindByIdAsync(updatePatientModel.Id);
             var patientId = int.TryParse(updatePatientModel.Id, out int parsedId) ? parsedId : 0;
-            var patientUser = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.UserId == patientId);
+            var patientUser = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == patientId);
+            var existingUser = await _userManager.FindByIdAsync(patientUser.UserId.ToString());
+            
+            
 
 
             if (patientUser == null || existingUser == null)
@@ -79,7 +82,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
             if (updatePatientModel.image != null)
             {
                 string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                string patientFolder = Path.Combine(webRootPath, "uploads", existingUser.Id.ToString());
+                string patientFolder = Path.Combine(webRootPath, "uploads", patientUser.Id.ToString());
 
                 if (!Directory.Exists(patientFolder))
                 {
@@ -120,7 +123,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
 
         public async Task<PatientResponseModel> GetUserByIdAsync(int userId)
         {
-            var user = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.UserId == userId);
+            var user = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user == null)
             {
@@ -171,7 +174,96 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
             return $"{baseUrl}{formattedPath}";
         }
 
+        public async Task<FamilyMemberResponse> AddFamilyMemberAsync(AddFamilyMemberRequest request)
+        {
+            var response = new FamilyMemberResponse();
+            try
+            {
+                // Check if the user exists
+                var userExists = await _userManager.Users.AnyAsync(u => u.Id == request.user_id);
+                if (!userExists)
+                {
+                    response.response = 404;
+                    response.status = false;
+                    response.message = "User not found";
+                    return response;
+                }
 
+                // Check if family member already exists
+                var existingMember = await _applicationDbContext.User_FamilyMembers
+                    .FirstOrDefaultAsync(f => f.Phone == request.phone && f.User_Id == request.user_id);
+
+                if (existingMember != null)
+                {
+                    response.response = 409;
+                    response.status = false;
+                    response.message = "Family member already exists with this phone number";
+                    return response;
+                }
+
+                // Create new family member entity
+                var familyMember = new UserFamilyMember
+                {
+                    F_Name = request.f_name,
+                    L_Name = request.l_name,
+                    Phone = request.phone,
+                    Isd_Code = request.isd_code,
+                    User_Id = request.user_id,
+                    Gender = request.gender,
+                    Dob = request.dob
+                };
+
+                // Save to database
+                _applicationDbContext.User_FamilyMembers.Add(familyMember);
+                await _applicationDbContext.SaveChangesAsync();
+
+                response.response = 201;
+                response.status = true;
+                response.message = "Family member added successfully";
+            }
+            catch (Exception ex)
+            {
+                response.response = 500;
+                response.status = false;
+                response.message = $"Error: {ex.Message}";
+            }
+
+            return response;
+        }
+
+        public async Task<List<GetFamilyMemberResponse>> GetFamilyMembersByUserAsync(int userId)
+        {
+            var responseList = new List<GetFamilyMemberResponse>();
+
+            try
+            {
+                var familyMembers = await _applicationDbContext.User_FamilyMembers
+                    .Where(x => x.User_Id == userId)
+                    .ToListAsync();
+
+                
+
+                responseList = familyMembers.Select(fm => new GetFamilyMemberResponse
+                {
+                    id= fm.Id,
+                    f_name = fm.F_Name,
+                    l_name = fm.L_Name,
+                    phone = fm.Phone,
+                    isd_code = fm.Isd_Code,
+                    user_id = fm.User_Id,
+                    gender = fm.Gender,
+                    dob = fm.Dob,
+                    created_at = fm.CreationTime.ToString(),
+                    updated_at = fm.LastModificationTime.ToString(),
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+            return responseList;
+        }
 
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj": {}
+    "C:\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj": {}
   },
   "projects": {
-    "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj": {
+    "C:\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj",
+        "projectUniqueName": "C:\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj",
         "projectName": "SiwanDoctorAPI",
-        "projectPath": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj",
+        "projectPath": "C:\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI.csproj",
         "packagesPath": "C:\\Users\\Kkumar\\.nuget\\packages\\",
-        "outputPath": "C:\\Madicare\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\obj\\",
+        "outputPath": "C:\\SiwanDoctorAPI\\SiwanDoctorAPI\\SiwanDoctorAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

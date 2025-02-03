@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250202105736_Add_NewTable")]
+    partial class AddNewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,14 +368,14 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<string>("Specialization")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TimeDuration")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TimeDuration")
+                        .HasColumnType("int");
 
-                    b.Property<string>("TimeEnd")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("TimeEnd")
+                        .HasColumnType("time");
 
-                    b.Property<string>("TimeStart")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("TimeStart")
+                        .HasColumnType("time");
 
                     b.Property<int>("doct_id")
                         .HasColumnType("int");
@@ -588,63 +591,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.ToTable("Patient_Information");
                 });
 
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.UserFamilyMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Dob")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("F_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Isd_Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("L_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("User_Id");
-
-                    b.ToTable("User_FamilyMember");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -727,17 +673,6 @@ namespace SiwanDoctorAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.UserFamilyMember", b =>
-                {
-                    b.HasOne("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.Patient_Details", "patient_Details")
-                        .WithMany()
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("patient_Details");
                 });
 #pragma warning restore 612, 618
         }

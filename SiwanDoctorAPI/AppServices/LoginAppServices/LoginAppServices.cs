@@ -54,7 +54,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
                 {
                     userDetails = new UserData
                     {
-                        id = user.Id,
+                        id = doctor.Id,
                         f_name = doctor.FirstName ?? string.Empty,
                         l_name = doctor.LastName ?? string.Empty,
                         phone = doctor.Phone ?? string.Empty,
@@ -87,7 +87,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
                 {
                     userDetails = new UserData
                     {
-                        id = user.Id,
+                        id = patient.Id,
                         f_name = patient.FirstName ?? string.Empty,
                         l_name = patient.LastName ?? string.Empty,
                         phone = user.PhoneNumber ?? string.Empty,
@@ -176,7 +176,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
                     {
                         userDetails = new UserData
                         {
-                            id = user.Id,
+                            id = doctor.Id,
                             f_name = doctor.FirstName ?? string.Empty,
                             l_name = doctor.LastName ?? string.Empty,
                             phone = doctor.Phone ?? string.Empty,
@@ -209,7 +209,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
                     {
                         userDetails = new UserData
                         {
-                            id = user.Id,
+                            id = patient.Id,
                             f_name = patient.FirstName ?? string.Empty,
                             l_name = patient.LastName ?? string.Empty,
                             phone = user.PhoneNumber ?? string.Empty,

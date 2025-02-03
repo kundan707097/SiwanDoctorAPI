@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SiwanDoctorAPI.Model.EntityModel.Department;
 using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
+using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
@@ -28,6 +30,10 @@ namespace SiwanDoctorAPI.DbConnection
 
         public DbSet<Doctor_Details> Doctor_Details { get; set; }
         public DbSet<Patient_Details> Patients_Details { get; set; }
+        public DbSet<Department> Doctor_Departments { get; set; }
+        public DbSet<Specialization> Doctor_Specializations { get; set; }
+        public DbSet<DoctorTimeSlot> Doctor_TimeSlots { get; set; }
+        public DbSet<UserFamilyMember> User_FamilyMembers { get; set; }
 
         public enum UserType
         {

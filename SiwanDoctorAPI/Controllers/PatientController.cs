@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SiwanDoctorAPI.AppServices.PatientAppServices;
+using SiwanDoctorAPI.Model.InputDTOModel.PatientInputDTO;
 using SiwanDoctorAPI.Model.InputDTOModel.UpdateInputDTO;
 
 namespace SiwanDoctorAPI.Controllers
 {
-    [Authorize]
     [Route("api/auth")]
     [ApiController]
     public class PatientController : ControllerBase
@@ -52,5 +52,24 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPost("add_family_member")]
+        public async Task<IActionResult> AddFamilyMember([FromForm] AddFamilyMemberRequest request)
+        {
+            var response = await _patientAppServices.AddFamilyMemberAsync(request);
+            return StatusCode(response.response, response);
+        }
+
+        [HttpGet("get_family_members/user/{userId}")]
+        public async Task<IActionResult> GetFamilyMembersByUser(int userId)
+        {
+            var response = await _patientAppServices.GetFamilyMembersByUserAsync(userId);
+
+            if (response == null || response.Count == 0)
+            {
+                return NotFound(new { status = false, message = "No family members found for this user." });
+            }
+
+            return Ok(new { status = true, message = "Family members retrieved successfully", data = response });
+        }
     }
 }
