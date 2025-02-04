@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250203174606_add_newcolumn")]
+    partial class addnewcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,78 +513,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.ToTable("Doctor_Information");
                 });
 
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.FamilyMemberVitals", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BpDiastolic")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BpSystolic")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FK_patient_Details")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FK_userFamilyMember")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Spo2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SugarFasting")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SugarRandom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Temperature")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FK_userFamilyMember");
-
-                    b.ToTable("Family_MemberVitals");
-                });
-
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.Patient_Details", b =>
                 {
                     b.Property<int>("Id")
@@ -791,17 +722,6 @@ namespace SiwanDoctorAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.FamilyMemberVitals", b =>
-                {
-                    b.HasOne("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.UserFamilyMember", "userFamilyMember")
-                        .WithMany()
-                        .HasForeignKey("FK_userFamilyMember")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("userFamilyMember");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.Patient_Details", b =>

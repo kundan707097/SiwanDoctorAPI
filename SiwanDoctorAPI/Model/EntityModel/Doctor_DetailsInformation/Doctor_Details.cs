@@ -41,5 +41,6 @@ namespace SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation
         public string? ProfileImagePath { get; set; }
         public string? city { get; set; }
         public string? State { get; set; }
+        public string? Description { get; set; }
     }
 }

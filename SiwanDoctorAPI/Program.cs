@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SiwanDoctorAPI.AppServices.DoctorAppServices;
+using SiwanDoctorAPI.AppServices.FamilyVitalsAppServices;
 using SiwanDoctorAPI.AppServices.LoginAppServices;
 using SiwanDoctorAPI.AppServices.PatientAppServices;
+using SiwanDoctorAPI.AppServices.PublicDoctorAppServices;
 using SiwanDoctorAPI.AppServices.RegistrationAppServices;
 using SiwanDoctorAPI.AppServices.TimeSlotAppServices;
 using SiwanDoctorAPI.DbConnection;
@@ -49,6 +51,8 @@ builder.Services.AddTransient<IRegistrationAppService, RegistrationAppService>()
 builder.Services.AddTransient<IPatientAppServices , PatientAppServices>();
 builder.Services.AddTransient<IDoctorAppServices, DoctorAppServices>();
 builder.Services.AddTransient<ITimeSlotAppServices, TimeSlotAppServices>();
+builder.Services.AddTransient<IPublicDoctorAppServices , PublicDoctorAppServices>();
+builder.Services.AddTransient<IFamilyVitalsAppServices  , FamilyVitalsAppServices>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

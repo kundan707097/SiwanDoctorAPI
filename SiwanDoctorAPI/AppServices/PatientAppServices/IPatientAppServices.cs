@@ -10,5 +10,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
         Task<PatientResponseModel> GetUserByIdAsync(int userId);
         Task<FamilyMemberResponse> AddFamilyMemberAsync(AddFamilyMemberRequest request);
         Task<List<GetFamilyMemberResponse>> GetFamilyMembersByUserAsync(int userId);
+        Task<bool> DeleteFamilyMemberByIdAsync(int id);
+        Task<bool> UpdateFamilyMemberAsync(UpdateFamilyMemberDto input);
     }
 }

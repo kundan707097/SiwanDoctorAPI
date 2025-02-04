@@ -71,5 +71,27 @@ namespace SiwanDoctorAPI.Controllers
 
             return Ok(new { status = true, message = "Family members retrieved successfully", data = response });
         }
+
+        [HttpDelete("delete_family_member")]
+        public async Task<IActionResult> DeleteFamilyMember([FromForm] int id)
+        {
+            var result = await _patientAppServices.DeleteFamilyMemberByIdAsync(id);
+
+            if (!result)
+                return NotFound(new { response = 404, message = "Family member not found or already deleted" });
+
+            return Ok(new { response = 200, message = "Family member deleted successfully" });
+        }
+        [HttpPut("update_family_member")]
+        public async Task<IActionResult> UpdateFamilyMember([FromForm] UpdateFamilyMemberDto input)
+        {
+            var result = await _patientAppServices.UpdateFamilyMemberAsync(input);
+
+            if (!result)
+                return NotFound(new { response = 404, message = "Family member not found" });
+
+            return Ok(new { response = 200, message = "Family member updated successfully" });
+        }
+
     }
 }

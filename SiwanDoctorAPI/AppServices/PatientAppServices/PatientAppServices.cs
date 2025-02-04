@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Abp.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.DbConnection;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
@@ -26,7 +27,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
         public async Task<UpdatePatientResponse> UpdatePatientDetails(UpdatePatientModel updatePatientModel)
         {
             var patientId = int.TryParse(updatePatientModel.Id, out int parsedId) ? parsedId : 0;
-            var patientUser = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == patientId);
+            var patientUser = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == patientId && x.IsDeleted ==false);
             var existingUser = await _userManager.FindByIdAsync(patientUser.UserId.ToString());
             
             
@@ -123,7 +124,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
 
         public async Task<PatientResponseModel> GetUserByIdAsync(int userId)
         {
-            var user = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == userId && x.IsDeleted ==false);
 
             if (user == null)
             {
@@ -238,7 +239,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
             try
             {
                 var familyMembers = await _applicationDbContext.User_FamilyMembers
-                    .Where(x => x.User_Id == userId)
+                    .Where(x => x.User_Id == userId && x.IsDeleted ==false)
                     .ToListAsync();
 
                 
@@ -263,6 +264,51 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
             }
 
             return responseList;
+        }
+
+        public async Task<bool> DeleteFamilyMemberByIdAsync(int id)
+        {
+            var familyMember = await _applicationDbContext.User_FamilyMembers
+                .FirstOrDefaultAsync(fm => fm.Id == id);
+
+            if (familyMember == null)
+                return false;
+
+            // Set IsDelete to true instead of removing the record
+            familyMember.IsDeleted = true;
+            _applicationDbContext.User_FamilyMembers.Update(familyMember);
+
+            await _applicationDbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UpdateFamilyMemberAsync(UpdateFamilyMemberDto input)
+        {
+            var familyMember = await _applicationDbContext.User_FamilyMembers
+                .FirstOrDefaultAsync(fm => fm.Id == input.id && fm.IsDeleted ==false);
+
+            if (familyMember == null)
+                return false;
+            // Updating fields
+            familyMember.F_Name = input.f_name;
+            familyMember.L_Name = input.l_name;
+            familyMember.Phone = input.phone;
+            familyMember.Isd_Code = input.isd_code;
+            familyMember.Gender = input.gender;
+            if (DateTime.TryParse(input.dob, out DateTime parsedDob))
+            {
+                familyMember.Dob = parsedDob;
+            }
+            else
+            {
+                return false; // Handle invalid date format
+            }
+
+            _applicationDbContext.User_FamilyMembers.Update(familyMember);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return true;
         }
 
     }
