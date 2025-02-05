@@ -35,6 +35,7 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<DoctorTimeSlot> Doctor_TimeSlots { get; set; }
         public DbSet<UserFamilyMember> User_FamilyMembers { get; set; }
         public DbSet<FamilyMemberVitals> familyMemberVitals { get; set; }
+        public DbSet<DoctorReview> doctorReviews { get; set; }
 
         public enum UserType
         {
@@ -71,6 +72,7 @@ namespace SiwanDoctorAPI.DbConnection
                 .Property(d => d.EmergencyFee)
                 .HasColumnType("decimal(18,2)");
             // Add any other model configurations here
+
 
         }
 
