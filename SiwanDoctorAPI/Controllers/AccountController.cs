@@ -88,7 +88,6 @@ namespace SiwanDoctorAPI.Controllers
 
 
 
-        [Authorize]
         [HttpPost("update_password")]
         public async Task<IActionResult> UpdatePassword([FromBody] PatientUpdatePasswordModel model)
         {

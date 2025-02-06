@@ -14,13 +14,15 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public DepartmentAppServices(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext applicationDbContext, IWebHostEnvironment hostingEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DepartmentAppServices(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext applicationDbContext, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             
             _userManager = userManager;
             _configuration = configuration;
             _applicationDbContext = applicationDbContext;
             _hostingEnvironment = hostingEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<AddDepartmentResponse> AddDepartmentAsync(AddDepartmentRequest request)
@@ -28,56 +30,56 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
             try
             {
                 string fileName = null;
+                string imageUrl = null;
+
                 if (request.image != null)
                 {
-                    // Define the folder path where images will be stored
-                    var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads", "department_images");
+                    // Get web root path (ensure it's not null)
+                    string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                    // Check if the folder exists, if not, create it
+                    // Define the folder path where images will be stored
+                    string uploadsFolder = Path.Combine(webRootPath, "uploads", "department_images");
+
                     if (!Directory.Exists(uploadsFolder))
                     {
-                        Directory.CreateDirectory(uploadsFolder);  // Ensure the folder exists
+                        Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    // Generate a unique file name for the uploaded image
-                    fileName = Guid.NewGuid().ToString() + Path.GetExtension(request.image.FileName);
+                    fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.image.FileName)}";
 
-                    // Define the full file path where the image will be saved
-                    var filePath = Path.Combine(uploadsFolder, fileName);
+                    string filePath = Path.Combine(uploadsFolder, fileName);
 
-                    // Save the image to the server
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await request.image.CopyToAsync(fileStream);
                     }
+
+                    string baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                    imageUrl = $"{baseUrl}/uploads/department_images/{fileName}";
                 }
 
-                // Create the department object to save in the database
                 var department = new Department
                 {
                     Title = request.title,
                     Description = request.description,
-                    DepartmentImage = fileName != null ? Path.Combine("uploads", "department_images", fileName) : null,
-                    CreationTime = DateTime.Now,
-                    LastModificationTime = DateTime.Now
+                    DepartmentImage = imageUrl,  // Store the full image URL
+                    CreationTime = DateTime.UtcNow, // Use UTC for consistency
+                    LastModificationTime = DateTime.UtcNow
                 };
 
-                // Add the department to the database
                 _applicationDbContext.Doctor_Departments.Add(department);
                 await _applicationDbContext.SaveChangesAsync();
 
-                // Return the response with success status
                 return new AddDepartmentResponse
                 {
                     response = 200,
                     status = true,
                     message = "Successfully added department",
-                    id = department.Id
+                    id = department.Id,
                 };
             }
             catch (Exception ex)
             {
-                // Return the response with error status if an exception occurs
                 return new AddDepartmentResponse
                 {
                     response = 400,
@@ -105,9 +107,6 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
                     };
                 }
 
-                // Update the 'active' status
-                //department.IsActive = request.Active == 1; // Set true if Active is 1, else false
-
                 // Update the 'title' and 'description' fields if provided
                 if (!string.IsNullOrEmpty(request.title))
                 {
@@ -122,17 +121,20 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
                 // Handle the image update if a new image is provided
                 if (request.image != null)
                 {
-                    // Define the folder path where images will be stored
-                    var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads", "department_images");
+                    // Get web root path (ensure it's not null)
+                    string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                    // Check if the folder exists, if not, create it
+                    // Define the folder path where images will be stored
+                    string uploadsFolder = Path.Combine(webRootPath, "uploads", "department_images");
+
+                    // Ensure the folder exists
                     if (!Directory.Exists(uploadsFolder))
                     {
-                        Directory.CreateDirectory(uploadsFolder);  // Ensure the folder exists
+                        Directory.CreateDirectory(uploadsFolder);
                     }
 
                     // Generate a unique file name for the uploaded image
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(request.image.FileName);
+                    string fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.image.FileName)}";
                     string filePath = Path.Combine(uploadsFolder, fileName);
 
                     // Save the new image to the server
@@ -141,27 +143,36 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
                         await request.image.CopyToAsync(fileStream);
                     }
 
-                    // Update the department's image path in the database
-                    department.DepartmentImage = Path.Combine("uploads", "department_images", fileName);
+                    // Delete the old image if it exists
+                    if (!string.IsNullOrEmpty(department.DepartmentImage))
+                    {
+                        string oldImagePath = Path.Combine(webRootPath, department.DepartmentImage.TrimStart('/'));
+                        if (File.Exists(oldImagePath))
+                        {
+                            File.Delete(oldImagePath);
+                        }
+                    }
+
+                    string baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                    string imageUrl = $"{baseUrl}/uploads/department_images/{fileName}";
+
+                    department.DepartmentImage = imageUrl;
                 }
 
-                // Update the modified timestamp
-                department.LastModificationTime = DateTime.Now;
+                department.LastModificationTime = DateTime.UtcNow;
 
-                // Save changes to the database
                 await _applicationDbContext.SaveChangesAsync();
 
-                // Return success response
                 return new UpdateDepartmentResponse
                 {
                     response = 200,
                     status = true,
-                    message = "Successfully updated department"
+                    message = "Successfully updated department",
                 };
             }
             catch (Exception ex)
             {
-                // Log exception (not shown here)
+
                 return new UpdateDepartmentResponse
                 {
                     response = 400,
@@ -170,6 +181,7 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
                 };
             }
         }
+
 
 
         public async Task<RemoveDepartmentImageResponse> RemoveDepartmentImageAsync(int id)

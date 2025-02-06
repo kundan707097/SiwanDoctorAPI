@@ -5,35 +5,35 @@ using SiwanDoctorAPI.DbConnection;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
 using SiwanDoctorAPI.Model.InputDTOModel.PatientInputDTO;
 using SiwanDoctorAPI.Model.InputDTOModel.UpdateInputDTO;
+using System.Numerics;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
 namespace SiwanDoctorAPI.AppServices.PatientAppServices
 {
     public class PatientAppServices : IPatientAppServices
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IWebHostEnvironment _hostingEnvironment;
         public PatientAppServices(UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            ApplicationDbContext applicationDbContext, IWebHostEnvironment hostingEnvironment)
+            ApplicationDbContext applicationDbContext, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _configuration = configuration;
             _applicationDbContext = applicationDbContext;
             _hostingEnvironment = hostingEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UpdatePatientResponse> UpdatePatientDetails(UpdatePatientModel updatePatientModel)
         {
             var patientId = int.TryParse(updatePatientModel.Id, out int parsedId) ? parsedId : 0;
-            var patientUser = await _applicationDbContext.Patients_Details.FirstOrDefaultAsync(x => x.Id == patientId && x.IsDeleted ==false);
-            var existingUser = await _userManager.FindByIdAsync(patientUser.UserId.ToString());
-            
-            
+            var patientUser = await _applicationDbContext.Patients_Details
+                .FirstOrDefaultAsync(x => x.Id == patientId && x.IsDeleted == false);
 
-
-            if (patientUser == null || existingUser == null)
+            if (patientUser == null)
             {
                 return new UpdatePatientResponse
                 {
@@ -42,6 +42,16 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
                 };
             }
 
+            var existingUser = await _userManager.FindByIdAsync(patientUser.UserId.ToString());
+
+            if (existingUser == null)
+            {
+                return new UpdatePatientResponse
+                {
+                    status = false,
+                    message = "User not found."
+                };
+            }
             if (!string.IsNullOrEmpty(updatePatientModel.email))
             {
                 existingUser.Email = updatePatientModel.email;
@@ -79,30 +89,93 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
                 patientUser.Gender = updatePatientModel.gender;
             }
 
-            // Handle image upload if provided
             if (updatePatientModel.image != null)
             {
                 string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                string patientFolder = Path.Combine(webRootPath, "uploads", patientUser.Id.ToString());
 
-                if (!Directory.Exists(patientFolder))
+                string uploadsFolder = Path.Combine(webRootPath, "uploads", "patient", patientUser.Id.ToString());
+
+                if (!Directory.Exists(uploadsFolder))
                 {
-                    Directory.CreateDirectory(patientFolder);
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                if (!string.IsNullOrEmpty(patientUser.ProfileImagePath))
+                {
+                    string webRootPaths = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+                    string userFolder = Path.Combine(webRootPaths, "uploads", "patient", patientUser.Id.ToString());
+
+                    if (Directory.Exists(userFolder))
+                    {
+                        string[] files = Directory.GetFiles(userFolder);
+
+                        foreach (string file in files)
+                        {
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error deleting {file}: {ex.Message}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Folder not found: {userFolder}");
+                    }
+
+
+
                 }
 
-                string uniqueFileName = $"{Guid.NewGuid()}_{updatePatientModel.image.FileName}";
-                string imagePath = Path.Combine(patientFolder, uniqueFileName);
 
-                using (var stream = new FileStream(imagePath, FileMode.Create))
+                string fileExtension = Path.GetExtension(updatePatientModel.image.FileName);
+                string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                string newImagePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(newImagePath, FileMode.Create))
                 {
                     await updatePatientModel.image.CopyToAsync(stream);
                 }
-                patientUser.ProfileImagePath = $"/uploads/{existingUser.Id}/{uniqueFileName}";
+
+                string baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+
+                patientUser.ProfileImagePath = $"{baseUrl}/uploads/patient/{patientUser.Id}/{uniqueFileName}";
             }
 
             var result = await _userManager.UpdateAsync(existingUser);
             _applicationDbContext.Patients_Details.Update(patientUser);
             await _applicationDbContext.SaveChangesAsync();
+
+            //if (updatePatientModel.image != null)
+            //{
+            //    string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            //    string uploadsFolder = Path.Combine(webRootPath, "uploads", patientUser.Id.ToString());
+
+            //    if (!Directory.Exists(uploadsFolder))
+            //    {
+            //        Directory.CreateDirectory(uploadsFolder);
+            //    }
+
+            //    string fileExtension = Path.GetExtension(updatePatientModel.image.FileName);
+            //    string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            //    string imagePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            //    using (var stream = new FileStream(imagePath, FileMode.Create))
+            //    {
+            //        await updatePatientModel.image.CopyToAsync(stream);
+            //    }
+
+            //    string baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+
+            //    patientUser.ProfileImagePath = $"{baseUrl}/uploads/{patientUser.Id}/{uniqueFileName}";
+            //}
+
+            //var result = await _userManager.UpdateAsync(existingUser);
+            //_applicationDbContext.Patients_Details.Update(patientUser);
+            //await _applicationDbContext.SaveChangesAsync();
 
             if (result.Succeeded)
             {
@@ -149,7 +222,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
                     gender = user.Gender,
                     dob = user.DateOfBirth ?? DateTime.MinValue,  // ✅ Fix: Handle null value
                     email = user.Email,
-                    image = GetImagePath(user.ProfileImagePath),  // ✅ Fix: Get Image Path
+                    image = user.ProfileImagePath,  // ✅ Fix: Get Image Path
                     address = user.patient_Address,
                     city = user.city,
                     state = user.State,
@@ -162,18 +235,18 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
 
         }
 
-        private string GetImagePath(string imagePath)
-        {
-            string baseUrl = "https://localhost:44306";  // Change this to match your backend URL
+        //private string GetImagePath(string imagePath)
+        //{
+        //    string baseUrl = "https://localhost:44306";  // Change this to match your backend URL
 
-            if (string.IsNullOrEmpty(imagePath))
-            {
-                return $"{baseUrl}/uploads/default.png";  // ✅ Return default image if missing
-            }
+        //    if (string.IsNullOrEmpty(imagePath))
+        //    {
+        //        return $"{baseUrl}/uploads/default.png";  // ✅ Return default image if missing
+        //    }
 
-            string formattedPath = imagePath.Replace("\\", "/");  // ✅ Fix double slashes
-            return $"{baseUrl}{formattedPath}";
-        }
+        //    string formattedPath = imagePath.Replace("\\", "/");  // ✅ Fix double slashes
+        //    return $"{baseUrl}{formattedPath}";
+        //}
 
         public async Task<FamilyMemberResponse> AddFamilyMemberAsync(AddFamilyMemberRequest request)
         {
