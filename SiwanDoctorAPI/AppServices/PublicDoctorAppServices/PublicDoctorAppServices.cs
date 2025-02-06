@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.DbConnection;
+using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.InputDTOModel.DoctorInputDTO;
+using SiwanDoctorAPI.Model.InputDTOModel.PublicInputDTO;
+using SiwanDoctorAPI.Model.InputDTOModel.TimeSlotInputDTO;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
 namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
@@ -134,5 +137,107 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
 
             return response;
         }
+
+        public async Task<List<ListDoctorTimeSlot>> GetDoctorTimeSlotsAsync(int doctorId)
+        {
+            var records = await _applicationDbContext.Doctor_TimeSlots
+                .Where(t => t.doct_id == doctorId && t.IsDeleted ==false)
+                .ToListAsync(); // Fetch data first
+
+            return records.Select(t => new ListDoctorTimeSlot
+            {
+                id = t.Id,
+                doct_Id = t.doct_id,
+                time_start = t.TimeStart,
+                time_end = t.TimeEnd,
+                time_duration = int.TryParse(t.TimeDuration, out int duration) ? duration : 0,  // Convert here
+                day = t.Day,
+                created_at = t.CreationTime.ToString(),
+                updated_at = t.LastModificationTime.ToString(),
+            }).ToList();
+        }
+
+        public async Task<List<DoctorTimeIntervalDTO>> GetDoctorTimeIntervalsAsync(int doctorId, string day)
+        {
+            var doctorTimeSlots = await _applicationDbContext.Doctor_TimeSlots
+            .Where(t => t.doct_id == doctorId && t.Day == day && t.IsDeleted ==false)
+            .ToListAsync();
+            if (!doctorTimeSlots.Any()) return new List<DoctorTimeIntervalDTO>();
+            List<DoctorTimeIntervalDTO> timeIntervals = new List<DoctorTimeIntervalDTO>();
+
+            foreach (var slot in doctorTimeSlots)
+            {
+                var startTime = TimeSpan.Parse(slot.TimeStart);
+                var endTime = TimeSpan.Parse(slot.TimeEnd);
+                int duration = int.Parse(slot.TimeDuration);
+
+                while (startTime < endTime)
+                {
+                    var nextTime = startTime.Add(TimeSpan.FromMinutes(duration));
+
+                    if (nextTime > endTime) break;
+
+                    timeIntervals.Add(new DoctorTimeIntervalDTO
+                    {
+                        time_start = startTime.ToString(@"hh\:mm"),
+                        time_end = nextTime.ToString(@"hh\:mm")
+                    });
+
+                    startTime = nextTime;
+                }
+            }
+            return timeIntervals;
+        }
+
+        public async Task<List<ListDoctorTimeSlot>> GetDoctorVideoTimeSlotsAsync(int doctorId)
+        {
+            // Fetch the time slots for the given doctor ID
+            var timeSlots = await _applicationDbContext.videoDoctorTimeSlots
+                .Where(ts => ts.doct_id == doctorId && !ts.IsDeleted)  // Assuming IsDeleted is for soft deletes
+                .OrderBy(ts => ts.Day)  // Optional ordering by day or time
+                .ToListAsync();
+            return timeSlots.Select(t => new ListDoctorTimeSlot
+            {
+                id = t.Id,
+                doct_Id = t.doct_id,
+                time_start = t.TimeStart,
+                time_end = t.TimeEnd,
+                time_duration = int.TryParse(t.TimeDuration, out int duration) ? duration : 0,  // Convert here
+                day = t.Day,
+                created_at = t.CreationTime.ToString(),
+                updated_at = t.LastModificationTime.ToString(),
+            }).ToList();
+
+        }
+
+        public async Task<List<DoctorTimeIntervalDTO>> GetVideoDoctorTimeIntervalAsync(int doctorId, string day)
+        {
+            var videoDoctorTimeSlots = await _applicationDbContext.videoDoctorTimeSlots.Where(vt=>vt.doct_id==doctorId && vt.IsDeleted ==false).ToListAsync();
+            if (!videoDoctorTimeSlots.Any()) return new List<DoctorTimeIntervalDTO>();
+            List<DoctorTimeIntervalDTO> timeIntervals = new List<DoctorTimeIntervalDTO>();
+            foreach (var videoSlot in videoDoctorTimeSlots)
+            {
+                var startTime = TimeSpan.Parse(videoSlot.TimeStart);
+                var endTime = TimeSpan.Parse(videoSlot.TimeEnd);
+                int duration = int.Parse(videoSlot.TimeDuration);
+
+                while(startTime < endTime)
+                {
+                    var nextTime = startTime.Add(TimeSpan.FromMinutes(duration));
+
+                    if (nextTime > endTime) break;
+
+                    timeIntervals.Add(new DoctorTimeIntervalDTO
+                    {
+                        time_start = startTime.ToString(@"hh\:mm"),
+                        time_end = nextTime.ToString(@"hh\:mm")
+                    });
+
+                    startTime = nextTime;
+                }
+            }
+            return timeIntervals;
+        }
+
     }
 }

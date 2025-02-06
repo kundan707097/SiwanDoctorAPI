@@ -7,10 +7,9 @@ namespace SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation
     [Table("Patient_Information")]
     public class Patient_Details: FullAuditedEntity
     {
-        [ForeignKey("User")]
-        public int UserId { get; set; } // Foreign key to AspNetUsers (long type)
-
+        [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
+        public int UserId { get; set; }
         public string? Email { get; set; } // User's email address
         public string? FirstName { get; set; } // First name of the user
         public string? LastName { get; set; } // Last name of the user

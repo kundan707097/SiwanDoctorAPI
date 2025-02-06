@@ -62,16 +62,16 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("login_phone")]
-        public async Task<IActionResult> LoginWithPhone([FromForm] string phone)
+        public async Task<IActionResult> LoginWithPhone([FromForm] LoginRequest request)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(phone))
+                if (string.IsNullOrWhiteSpace(request.Phone))
                 {
                     return BadRequest(new { message = "Phone number is required." });
                 }
 
-                var response = await _loginAppServices.LoginWithPhoneNumber(phone);
+                var response = await _loginAppServices.LoginWithPhoneNumber(request.Phone);
 
                 if (!response.status)
                 {

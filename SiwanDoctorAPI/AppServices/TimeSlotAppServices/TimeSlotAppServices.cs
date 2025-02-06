@@ -89,6 +89,145 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
         }
 
 
+        public async Task<ServiceResponse> AddVideoTimeSlotAsync(VideoTimeSlotRequest request)
+        {
+            try
+            {
+                // Validate input data
+                if (string.IsNullOrEmpty(request.time_start) || string.IsNullOrEmpty(request.time_end) || string.IsNullOrEmpty(request.day))
+                {
+                    return new ServiceResponse
+                    {
+                        response = 400,
+                        status = false,
+                        message = "Invalid input data"
+                    };
+                }
 
+                // Convert TimeDuration to int safely
+                //if (!int.TryParse(request.time_duration, out int duration))
+                //{
+                //    return new ServiceResponse
+                //    {
+                //        response = 400,
+                //        status = false,
+                //        message = "Invalid time duration"
+                //    };
+                //}
+
+                // Create a new timeslot entity
+                var timeSlot = new DoctorTimeSlot
+                {
+                    doct_id = request.doct_id,
+                    TimeStart = request.time_start,
+                    TimeEnd = request.time_end,
+                    TimeDuration = request.time_duration,
+                    Day = request.day,
+                    CreationTime = DateTime.UtcNow
+                };
+
+                // Add to the database
+                _applicationDbContext.Doctor_TimeSlots.Add(timeSlot);
+                await _applicationDbContext.SaveChangesAsync();
+
+                return new ServiceResponse
+                {
+                    response = 202,
+                    status = true,
+                    message = "Video created successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"Internal Server Error: {ex.Message}"
+                };
+            }
+        }
+
+
+        public async Task<ServiceResponse> DeleteVideoTimeSlotAsync(DeleteVideoTimeSlotRequest request)
+        {
+            try
+            {
+                // Check if the ID is valid and exists in the database
+                var timeSlot = await _applicationDbContext.videoDoctorTimeSlots
+                    .FirstOrDefaultAsync(ts => ts.Id.ToString() == request.id);
+
+                if (timeSlot == null)
+                {
+                    return new ServiceResponse
+                    {
+                        response = 400,
+                        status = false,
+                        message = "Time slot not found"
+                    };
+                }
+
+                // Delete the time slot
+                timeSlot.IsDeleted = true;
+                _applicationDbContext.videoDoctorTimeSlots.Update(timeSlot);
+                await _applicationDbContext.SaveChangesAsync();
+
+                return new ServiceResponse
+                {
+                    response = 200,
+                    status = true,
+                    message = "Slot deleted successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"Internal Server Error: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<ServiceResponse> DeleteTimeSlotAsync(DeleteTimeSlotRequest request)
+        {
+            try
+            {
+                var timeSlot = await _applicationDbContext.Doctor_TimeSlots
+                    .FirstOrDefaultAsync(ts => ts.Id.ToString() == request.id);
+
+                if (timeSlot == null)
+                {
+                    return new ServiceResponse
+                    {
+                        response = 400,
+                        status = false,
+                        message = "Time slot not found"
+                    };
+                }
+
+                // Delete the time slot
+                timeSlot.IsDeleted = true;
+                _applicationDbContext.Doctor_TimeSlots.Update(timeSlot);
+                await _applicationDbContext.SaveChangesAsync();
+
+                return new ServiceResponse
+                {
+                    response = 200,
+                    status = true,
+                    message = "Slot deleted successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"Internal Server Error: {ex.Message}"
+                };
+            }
+        }
     }
 }

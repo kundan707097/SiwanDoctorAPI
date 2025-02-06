@@ -7,10 +7,10 @@ namespace SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation
     [Table("Doctor_Information")]
     public class Doctor_Details: FullAuditedEntity
     {
-        [ForeignKey("User")]
+        
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
         public int UserId { get; set; } // Change to int
-
-        public virtual ApplicationUser User { get; set; } 
         public string? Email { get; set; } 
         public string? FirstName { get; set; } 
         public string? LastName { get; set; } 

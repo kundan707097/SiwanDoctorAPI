@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250205184648_Change_ForeignKey_PropertiesAndAppointmentTable")]
+    partial class ChangeForeignKeyPropertiesAndAppointmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -495,57 +498,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.ToTable("Doctor_TimeSlot");
                 });
 
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.VideoDoctorTimeSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Day")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("TimeDuration")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeEnd")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeStart")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("doct_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("doct_id");
-
-                    b.ToTable("VideoDoctor_TimeSlot");
-                });
-
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.DoctorReview", b =>
                 {
                     b.Property<int>("Id")
@@ -996,17 +948,6 @@ namespace SiwanDoctorAPI.Migrations
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.DoctorTimeSlot", b =>
-                {
-                    b.HasOne("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("doct_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.VideoDoctorTimeSlot", b =>
                 {
                     b.HasOne("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", "Doctor")
                         .WithMany()
