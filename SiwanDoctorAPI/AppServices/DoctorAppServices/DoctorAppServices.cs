@@ -215,7 +215,99 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
             return response;
         }
 
-        
+        public async Task<UpdateDoctorResponse> UpdateDoctorImageAsync(DoctorUpdateImage request)
+        {
+            var response = new UpdateDoctorResponse();
+            var doctor = await _applicationDbContext.Doctor_Details.FindAsync(request.id);
+
+            if (doctor == null)
+            {
+                return new UpdateDoctorResponse
+                {
+                    response = 404, // Not Found
+                    status = false,
+                    message = "Doctor not found."
+                };
+            }
+
+            if (string.IsNullOrEmpty(doctor.ProfileImagePath))
+            {
+                return new UpdateDoctorResponse
+                {
+                    response = 400, // Bad Request
+                    status = false,
+                    message = "No image found for this doctor."
+                };
+            }
+
+            if (request.image != null)
+            {
+                string webRootPath = _hostingEnvironment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                string doctorFolder = Path.Combine(webRootPath, "uploads", "doctor", doctor.Id.ToString());
+
+                if (!Directory.Exists(doctorFolder))
+                {
+                    Directory.CreateDirectory(doctorFolder);
+                }
+
+                // Delete existing image
+                if (!string.IsNullOrEmpty(doctor.ProfileImagePath))
+                {
+                    string userFolder = Path.Combine(webRootPath, "uploads", "doctor", doctor.Id.ToString());
+
+                    if (Directory.Exists(userFolder))
+                    {
+                        string[] files = Directory.GetFiles(userFolder);
+                        foreach (string file in files)
+                        {
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error deleting {file}: {ex.Message}");
+                            }
+                        }
+                    }
+                }
+
+                // Save new image
+                string fileExtension = Path.GetExtension(request.image.FileName);
+                string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                string newImagePath = Path.Combine(doctorFolder, uniqueFileName);
+
+                using (var stream = new FileStream(newImagePath, FileMode.Create))
+                {
+                    await request.image.CopyToAsync(stream);
+                }
+
+                string baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
+                doctor.ProfileImagePath = $"{baseUrl}/uploads/doctor/{doctor.Id}/{uniqueFileName}";
+            }
+
+            _applicationDbContext.Doctor_Details.Update(doctor);
+
+            try
+            {
+                await _applicationDbContext.SaveChangesAsync();
+                return new UpdateDoctorResponse
+                {
+                    response = 200, // OK
+                    status = true,
+                    message = "Record updated successfully."
+                };
+            }
+            catch (Exception)
+            {
+                return new UpdateDoctorResponse
+                {
+                    response = 500, // Internal Server Error
+                    status = false,
+                    message = "An error occurred while updating the record."
+                };
+            }
+        }
 
     }
 }

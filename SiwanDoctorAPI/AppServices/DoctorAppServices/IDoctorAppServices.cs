@@ -7,5 +7,6 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
     {
         Task<UpdateDoctorResponse> UpdateDoctorAsync(UpdateDoctorDTO doctorDto);
         Task<UpdateDoctorResponse> RemoveDoctorImageAsync(int id);
+        Task<UpdateDoctorResponse> UpdateDoctorImageAsync(DoctorUpdateImage request);
     }
 }

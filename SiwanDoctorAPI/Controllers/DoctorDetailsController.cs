@@ -28,7 +28,12 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(result);
         }
 
-        
+        [HttpPut("update_doctor_image")]
+        public async Task<IActionResult> UpdateDoctorImage(DoctorUpdateImage request)
+        {
+            var result = await _doctorAppServices.UpdateDoctorImageAsync(request);
+            return Ok(result);
+        }
 
     }
 }
