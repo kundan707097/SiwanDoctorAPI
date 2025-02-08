@@ -95,7 +95,7 @@ namespace SiwanDoctorAPI.Controllers
 
             if (vitals == null || vitals.Count == 0)
             {
-                return NotFound(new { message = "No vitals found for this user" });
+                return StatusCode(201, new { message = "No vitals found for this user" });
             }
 
             // Prepare the response
@@ -107,6 +107,7 @@ namespace SiwanDoctorAPI.Controllers
 
             return Ok(response);
         }
+
 
         [HttpGet("get_vitals/family_member/{familyMemberId}")]
         public async Task<IActionResult> GetVitalsByFamilyMember(int familyMemberId)

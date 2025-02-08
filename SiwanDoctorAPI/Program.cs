@@ -11,6 +11,7 @@ using SiwanDoctorAPI.AppServices.LoginAppServices;
 using SiwanDoctorAPI.AppServices.PatientAppServices;
 using SiwanDoctorAPI.AppServices.PublicDoctorAppServices;
 using SiwanDoctorAPI.AppServices.RegistrationAppServices;
+using SiwanDoctorAPI.AppServices.SocialMediaAppservices;
 using SiwanDoctorAPI.AppServices.SpecializationAppServices;
 using SiwanDoctorAPI.AppServices.TimeSlotAppServices;
 using SiwanDoctorAPI.DbConnection;
@@ -61,6 +62,7 @@ builder.Services.AddTransient<ISpecializationAppServices ,SpecializationAppServi
 builder.Services.AddTransient<IDepartmentAppServices, DepartmentAppServices>();
 builder.Services.AddTransient<IDoctorReviewAppServices, DoctorReviewAppServices>();
 builder.Services.AddTransient<IAppointmentAppServices , AppointmentAppServices>();
+builder.Services.AddTransient<ISocialMediaAppservices, SocialMediaAppservices>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

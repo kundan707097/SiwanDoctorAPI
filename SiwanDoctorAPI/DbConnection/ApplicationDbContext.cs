@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SiwanDoctorAPI.Model.EntityModel.AdminEntity;
 using SiwanDoctorAPI.Model.EntityModel.AppointmentDetails;
 using SiwanDoctorAPI.Model.EntityModel.Department;
 using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
@@ -39,6 +40,7 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<DoctorReview> doctorReviews { get; set; }
         public DbSet<Appointment> appointments { get; set; }
         public DbSet<VideoDoctorTimeSlot> videoDoctorTimeSlots { get; set; }
+        public DbSet<SocialMedia> socialMedias { get; set; }
         public enum UserType
         {
             Doctor = 1,
