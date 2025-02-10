@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SiwanDoctorAPI.AppServices.PublicDoctorAppServices;
+using SiwanDoctorAPI.Model.EntityModel.AppointmentDetails;
 using SiwanDoctorAPI.Model.InputDTOModel.TimeSlotInputDTO;
 
 namespace SiwanDoctorAPI.Controllers
@@ -88,6 +89,18 @@ namespace SiwanDoctorAPI.Controllers
             }
 
             return Ok(new { response = 200, data = videoTimeIntervals });
+        }
+
+        [HttpGet("Get_Booked_time_Slot_By_DoctId")]
+        public async Task<IActionResult> GetBookedTimeSlotByDoctor(BookedTimeSlotByDoctorRequest request)
+        {
+            var appointments = await _publicDoctorAppServices.GetBookedTimeSlot(request);
+            if (appointments == null || appointments.data.Count == 0)
+            {
+                return NotFound(new { Message = "No appointments found." });
+            }
+
+            return Ok(appointments);
         }
     }
 }

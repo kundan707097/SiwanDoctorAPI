@@ -284,7 +284,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Social_Media");
+                    b.ToTable("Social_Media", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.AppointmentDetails.Appointment", b =>
@@ -395,7 +395,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("FK_DoctId");
 
-                    b.ToTable("Patient_Appointments");
+                    b.ToTable("Patient_Appointments", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Department.Department", b =>
@@ -441,7 +441,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctor_Department");
+                    b.ToTable("Doctor_Department", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Department.Specialization", b =>
@@ -478,7 +478,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctor_Specialization");
+                    b.ToTable("Doctor_Specialization", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.DoctorTimeSlot", b =>
@@ -535,7 +535,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("doct_id");
 
-                    b.ToTable("Doctor_TimeSlot");
+                    b.ToTable("Doctor_TimeSlot", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.VideoDoctorTimeSlot", b =>
@@ -586,7 +586,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("doct_id");
 
-                    b.ToTable("VideoDoctor_TimeSlot");
+                    b.ToTable("VideoDoctor_TimeSlot", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.DoctorReview", b =>
@@ -637,7 +637,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("FK_DoctorId");
 
-                    b.ToTable("Doctor_Reviews");
+                    b.ToTable("Doctor_Reviews", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", b =>
@@ -763,7 +763,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Doctor_Information");
+                    b.ToTable("Doctor_Information", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.FamilyMemberVitals", b =>
@@ -835,7 +835,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("FK_userFamilyMember");
 
-                    b.ToTable("Family_MemberVitals");
+                    b.ToTable("Family_MemberVitals", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.Patient_Details", b =>
@@ -916,7 +916,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Patient_Information");
+                    b.ToTable("Patient_Information", (string)null);
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.UserFamilyMember", b =>
@@ -973,7 +973,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("User_Id");
 
-                    b.ToTable("User_FamilyMember");
+                    b.ToTable("User_FamilyMember", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

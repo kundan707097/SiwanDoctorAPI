@@ -38,7 +38,7 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<UserFamilyMember> User_FamilyMembers { get; set; }
         public DbSet<FamilyMemberVitals> familyMemberVitals { get; set; }
         public DbSet<DoctorReview> doctorReviews { get; set; }
-        public DbSet<Appointment> appointments { get; set; }
+        public virtual DbSet<Appointment> appointments { get; set; }
         public DbSet<VideoDoctorTimeSlot> videoDoctorTimeSlots { get; set; }
         public DbSet<SocialMedia> socialMedias { get; set; }
         public enum UserType

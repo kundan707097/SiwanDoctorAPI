@@ -238,6 +238,32 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
             }
             return timeIntervals;
         }
+        public async Task<BookedTimeSlotByDoctorResponse> GetBookedTimeSlot(BookedTimeSlotByDoctorRequest request)
+        {
+            var response = new BookedTimeSlotByDoctorResponse();
 
+            if (request == null || request.doct_id == 0)
+            {
+                response.response = 400; // Bad Request
+                return response;
+            }
+
+            var appointments = await _applicationDbContext.appointments
+                .Where(x => x.FK_DoctId == request.doct_id && x.Status == "Confirmed" &&
+                            (request.type == null || x.Type == request.type) &&
+                            (request.date == null || x.Date == request.date))
+                .Select(x => new BookedTimeSlotResponse
+                {
+                    time_slots = x.TimeSlots,
+                    date = x.Date,
+                    type = x.Type,
+                    appointment_id = x.Id
+                })
+                .ToListAsync();
+
+            response.response = 200; // Success
+            response.data = appointments;
+            return response;
+        }
     }
 }

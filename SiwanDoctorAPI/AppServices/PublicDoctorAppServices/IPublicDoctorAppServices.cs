@@ -14,5 +14,7 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
         Task<List<DoctorTimeIntervalDTO>> GetDoctorTimeIntervalsAsync(int doctorId, string day);
         Task<List<ListDoctorTimeSlot>> GetDoctorVideoTimeSlotsAsync(int doctorId);
         Task<List<DoctorTimeIntervalDTO>> GetVideoDoctorTimeIntervalAsync(int doctorId, string day);
+
+        Task<BookedTimeSlotByDoctorResponse> GetBookedTimeSlot(BookedTimeSlotByDoctorRequest request);
     }
 }
