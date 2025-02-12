@@ -112,7 +112,7 @@ namespace SiwanDoctorAPI.Controllers
             var result = await _appointmentAppServices.GetAppointmentsByPaginationRecordss(doctor_id, start, end);
             return Ok(new { response = 200, total_record = result.TotalCount, data = result.Items });
         }
-        [HttpPost("update_appointment_status")]
+        [HttpPost("update_appointment_statusByID")]
         public async Task<IActionResult> UpdateAppointmentStatus([FromForm] int id, [FromForm] string status)
         {
             var result = await _appointmentAppServices.UpdateAppointmentStatus(id, status);
