@@ -7,6 +7,7 @@ using SiwanDoctorAPI.Model.EntityModel.Department;
 using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
+using SiwanDoctorAPI.Model.EntityModel.SettingEntity;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
 namespace SiwanDoctorAPI.DbConnection
@@ -41,6 +42,7 @@ namespace SiwanDoctorAPI.DbConnection
         public virtual DbSet<Appointment> appointments { get; set; }
         public DbSet<VideoDoctorTimeSlot> videoDoctorTimeSlots { get; set; }
         public DbSet<SocialMedia> socialMedias { get; set; }
+        public DbSet<WebPage> webPages { get; set; }
         public enum UserType
         {
             Doctor = 1,
@@ -51,7 +53,13 @@ namespace SiwanDoctorAPI.DbConnection
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var foreignKey in entityType.GetForeignKeys())
+                {
+                    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+                }
+            }
             // Configure Identity tables to use int keys
             builder.Entity<ApplicationUser>(entity =>
             {

@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.DbConnection;
 using SiwanDoctorAPI.Model.EntityModel.AppointmentDetails;
 using SiwanDoctorAPI.Model.InputDTOModel.AppointmentInputDTO;
+using SiwanDoctorAPI.Model.InputDTOModel.TimeSlotInputDTO;
+using System.Threading.Tasks;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
 namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
 {
-    public class AppointmentAppServices: IAppointmentAppServices
+    public class AppointmentAppServices : IAppointmentAppServices
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _applicationDbContext;
         public AppointmentAppServices(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext applicationDbContext)
         {
-            
+
             _userManager = userManager;
             _configuration = configuration;
             _applicationDbContext = applicationDbContext;
@@ -98,8 +102,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = a.CreationTime.ToString(),
                     updated_at = a.LastModificationTime.ToString(),
                     user_id = a.UserId,
-                    //patient_f_name = a.,
-                    //patient_l_name = a.PatientLastName,
+                    patient_f_name = a.patient_Details.FirstName,
+                    patient_l_name = a.patient_Details.LastName,
                     //dept_title = a.DepartmentTitle,
                     doct_f_name = a.doctor_Details.FirstName,
                     doct_l_name = a.doctor_Details.LastName,
@@ -133,10 +137,10 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = x.CreationTime.ToString(),
                     updated_at = x.LastModificationTime.ToString(),
                     user_id = x.UserId,
-                    //PatientFName = x.p,
-                    //PatientLName = x.PatientLName,
-                    //PatientPhone = x.PatientPhone,
-                    //PatientGender = x.PatientGender,
+                    patient_f_name = x.patient_Details.FirstName,
+                    patient_l_name = x.patient_Details.LastName,
+                    patient_gender = x.patient_Details.Gender,
+                    patient_phone = x.patient_Details.Phone,
                     //DeptTitle = x.,
                     doct_f_name = x.doctor_Details.FirstName,
                     doct_l_name = x.doctor_Details.LastName,
@@ -227,10 +231,10 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                 created_at = x.CreationTime.ToString(), // Assuming CreationTime is DateTime?, convert it to string
                 updated_at = x.LastModificationTime?.ToString(), // Assuming LastModificationTime is DateTime?, convert it to string
                 user_id = x.UserId,
-                //patient_f_name = x.PatientFName,
-                //patient_l_name = x.PatientLName,
-                //patient_phone = x.PatientPhone,
-                //patient_gender = x.PatientGender,
+                patient_f_name = x.patient_Details.FirstName,
+                patient_l_name = x.patient_Details.LastName,
+                patient_phone = x.patient_Details.Phone,
+                patient_gender = x.patient_Details.Gender,
                 //dept_title = x.DeptTitle,
                 doct_f_name = x.doctor_Details?.FirstName, // Make sure doctor_Details is properly included
                 doct_l_name = x.doctor_Details?.LastName,
@@ -271,8 +275,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = a.CreationTime.ToString(),
                     updated_at = a.LastModificationTime.ToString(),
                     user_id = a.UserId,
-                    //patient_f_name = a.,
-                    //patient_l_name = a.PatientLastName,
+                    patient_f_name = a.patient_Details.FirstName,
+                    patient_l_name = a.patient_Details.LastName,
                     //dept_title = a.DepartmentTitle,
                     doct_f_name = a.doctor_Details.FirstName,
                     doct_l_name = a.doctor_Details.LastName,
@@ -283,11 +287,14 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
 
             return appointments;
         }
-
-        public async Task<List<AppointmentDate>> GetAppointmentsByPaginationRecords(int doctorId, int start, int end)
+        public async Task<PagedResultDto<AppointmentDate>> GetAppointmentsByPaginationRecordss(int doctorId, int start, int end)
         {
-            return await _applicationDbContext.appointments
-                .Where(x => x.FK_DoctId == doctorId)
+            var query = _applicationDbContext.appointments.Where(x => x.FK_DoctId == doctorId);
+
+            var totalRecords = await query.CountAsync();
+
+            var appointments = await query
+                .OrderBy(x => x.Date)
                 .Skip(start)
                 .Take(end - start)
                 .Select(x => new AppointmentDate
@@ -308,15 +315,161 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = x.CreationTime.ToString(),
                     updated_at = x.LastModificationTime.ToString(),
                     user_id = x.UserId,
-                    //patient_f_name = x.PatientFName,
-                    //patient_l_name = x.pa,
-                    dept_title = x.doctor_Details.Department,
+                    patient_f_name = x.patient_Details.FirstName,
+                    patient_l_name = x.patient_Details.LastName,
+                    //dept_title = x.doctor_Details.Department,
                     doct_f_name = x.doctor_Details.FirstName,
                     doct_l_name = x.doctor_Details.LastName,
                     doct_image = x.doctor_Details.ProfileImagePath,
                     doct_specialization = x.doctor_Details.Specialization
                 })
                 .ToListAsync();
+
+            return new PagedResultDto<AppointmentDate>
+            {
+                TotalCount = totalRecords,
+                Items = appointments
+            };
         }
+
+        public async Task<ServiceResponse> UpdateAppointmentStatus(int id, string status)
+        {
+            var appointment = await _applicationDbContext.appointments
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (appointment == null)
+            {
+                return new ServiceResponse
+                {
+                    response = 201, // It seems response 201 is intended for "Appointment not found", consider using a different status code
+                    status = false,
+                    message = "Appointment not found"
+                };
+            }
+
+            // Logic for updating appointment status
+            appointment.Status = status;
+
+            try
+            {
+                _applicationDbContext.appointments.Update(appointment);
+                var saveResult = await _applicationDbContext.SaveChangesAsync();
+
+                if (saveResult > 0)
+                {
+                    return new ServiceResponse
+                    {
+                        response = 200,
+                        status = true,
+                        message = "Status updated successfully"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"Error occurred while updating status: {ex.Message}"
+                };
+            }
+
+            return new ServiceResponse
+            {
+                response = 400,
+                status = false,
+                message = "Cannot update status"
+            };
+        }
+
+
+        public async Task<ServiceResponse> CancelAppointmentStatus(int id, string status)
+        {
+            var appointment = await _applicationDbContext.appointments
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (appointment == null)
+            {
+                return new ServiceResponse
+                {
+                    response = 201, // It seems response 201 is intended for "Appointment not found", consider using a different status code
+                    status = false,
+                    message = "Appointment not found"
+                };
+            }
+
+            // Logic for updating appointment status
+            appointment.Status = status;
+
+            try
+            {
+                _applicationDbContext.appointments.Update(appointment);
+                var saveResult = await _applicationDbContext.SaveChangesAsync();
+
+                if (saveResult > 0)
+                {
+                    return new ServiceResponse
+                    {
+                        response = 200,
+                        status = true,
+                        message = "Status updated successfully"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"Error occurred while updating status: {ex.Message}"
+                };
+            }
+
+            return new ServiceResponse
+            {
+                response = 400,
+                status = false,
+                message = "Cannot update status"
+            };
+        }
+
+        //public async Task<List<AppointmentDate>> GetAppointmentsByPaginationRecords(int doctorId, int start, int end)
+        //{
+        //    return await _applicationDbContext.appointments
+        //        .Where(x => x.FK_DoctId == doctorId)
+        //        .Skip(start)
+        //        .Take(end - start)
+        //        .Select(x => new AppointmentDate
+        //        {
+        //            id = x.Id,
+        //            patient_id = x.FK_PatientId,
+        //            status = x.Status,
+        //            date = x.Date,
+        //            time_slots = x.TimeSlots,
+        //            doct_id = x.FK_DoctId,
+        //            dept_id = x.DeptId,
+        //            type = x.Type,
+        //            meeting_id = x.MeetingId,
+        //            meeting_link = x.MeetingLink,
+        //            payment_status = x.PaymentStatus,
+        //            //current_cancel_req_status = x.CurrentCancelReqStatus,
+        //            source = x.Source,
+        //            created_at = x.CreationTime.ToString(),
+        //            updated_at = x.LastModificationTime.ToString(),
+        //            user_id = x.UserId,
+        //            patient_f_name = x.patient_Details.FirstName,
+        //            patient_l_name = x.patient_Details.LastName,
+        //            //dept_title = x.doctor_Details.Department,
+        //            doct_f_name = x.doctor_Details.FirstName,
+        //            doct_l_name = x.doctor_Details.LastName,
+        //            doct_image = x.doctor_Details.ProfileImagePath,
+        //            doct_specialization = x.doctor_Details.Specialization
+        //        })
+        //        .ToListAsync();
+        //}
     }
 }

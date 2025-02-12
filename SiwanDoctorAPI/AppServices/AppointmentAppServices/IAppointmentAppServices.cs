@@ -1,5 +1,7 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using SiwanDoctorAPI.Model.InputDTOModel.AppointmentInputDTO;
+using SiwanDoctorAPI.Model.InputDTOModel.TimeSlotInputDTO;
 
 namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
 {
@@ -11,5 +13,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
         Task<UpdateStatusResponse> UpdateAppointmentStatusById(UpdateAppointmentStatus request);
         Task<AppointmentsByDateRange> GetAppointmentsByDateRange(DateTime startDate, DateTime endDate);
         Task<List<AppointmentDate>> GetAppointmentsByDoctorIdAsync(int doctorId);
+        Task<PagedResultDto<AppointmentDate>> GetAppointmentsByPaginationRecordss(int doctorId, int start, int end);
+        Task<ServiceResponse> UpdateAppointmentStatus(int id, string status);
+        Task<ServiceResponse> CancelAppointmentStatus(int id, string status);
     }
 }

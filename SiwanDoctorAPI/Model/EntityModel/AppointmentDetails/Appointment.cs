@@ -9,7 +9,9 @@ namespace SiwanDoctorAPI.Model.EntityModel.AppointmentDetails
     [Table("Patient_Appointments")]
     public class Appointment : FullAuditedEntity
     {
-        public int FK_PatientId { get; set; }
+        [ForeignKey("FK_PatientId")]
+        public virtual Patient_Details patient_Details { get; set; }
+        public virtual int FK_PatientId { get; set; }
         public string? Status { get; set; }
         public string? Date { get; set; }
         public string? TimeSlots { get; set; }

@@ -101,10 +101,30 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(new { response = 200, data = result });
         }
 
-        //[HttpGet("get_appointments/{doctor_id}/page")]
-        //public async IActionResult GetAppointmentsByPagination(int doctor_id, int start, int end)
-        //{
-        //    var result = await _appointmentAppServices.GetAppointmentsByPaginationRecords(doctor_id, start, end);
-        //}
+        [HttpGet("get_appointments/{doctor_id}/page")]
+        public async Task<IActionResult> GetAppointmentsByPagination(int doctor_id, int start, int end)
+        {
+            if (start < 0 || end <= start)
+            {
+                return BadRequest("Invalid pagination parameters.");
+            }
+
+            var result = await _appointmentAppServices.GetAppointmentsByPaginationRecordss(doctor_id, start, end);
+            return Ok(new { response = 200, total_record = result.TotalCount, data = result.Items });
+        }
+        [HttpPost("update_appointment_status")]
+        public async Task<IActionResult> UpdateAppointmentStatus([FromForm] int id, [FromForm] string status)
+        {
+            var result = await _appointmentAppServices.UpdateAppointmentStatus(id, status);
+
+            return Ok(result);
+        }
+        [HttpPost("Cancel_appointment_status")]
+        public async Task<IActionResult> CencelAppointments([FromForm] int id, [FromForm] string status)
+        {
+            var result = await _appointmentAppServices.CancelAppointmentStatus(id, status);
+
+            return Ok(result);
+        }
     }
 }
