@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using SiwanDoctorAPI.DbConnection;
 using SiwanDoctorAPI.Model.InputDTOModel.LoginInputDTO;
 using SiwanDoctorAPI.Model.InputDTOModel.PatientInputDTO;
+using SiwanDoctorAPI.Model.InputDTOModel.RegistrationInputDTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -288,6 +289,71 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
             response.status = true;
             response.message = "Password updated successfully";
             return response;
+        }
+
+        public async Task<RegistrationOutputResponse> UpdateUserRoleAsync(string userId, string newRole)
+        {
+            try
+            {
+                // Fetch the user by ID
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return new RegistrationOutputResponse
+                    {
+                        response = 404,
+                        status = false,
+                        message = "User not found."
+                    };
+                }
+
+                // Get current roles assigned to the user
+                var currentRoles = await _userManager.GetRolesAsync(user);
+
+                // Remove existing roles
+                var removeRoleResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                if (!removeRoleResult.Succeeded)
+                {
+                    return new RegistrationOutputResponse
+                    {
+                        response = 500,
+                        status = false,
+                        message = "Failed to remove existing roles. " +
+                                  string.Join(", ", removeRoleResult.Errors.Select(e => e.Description))
+                    };
+                }
+
+                // Add new role
+                var addRoleResult = await _userManager.AddToRoleAsync(user, newRole);
+                if (!addRoleResult.Succeeded)
+                {
+                    return new RegistrationOutputResponse
+                    {
+                        response = 500,
+                        status = false,
+                        message = "Failed to assign new role. " +
+                                  string.Join(", ", addRoleResult.Errors.Select(e => e.Description))
+                    };
+                }
+
+                return new RegistrationOutputResponse
+                {
+                    response = 200,
+                    status = true,
+                    message = $"User role updated successfully to {newRole}."
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+                return new RegistrationOutputResponse
+                {
+                    response = 500,
+                    status = false,
+                    message = $"An error occurred: {ex.Message}"
+                };
+            }
         }
 
     }

@@ -79,7 +79,11 @@ builder.Services.AddCors(options =>
     });
 });
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+    await EnsureRolesExist(roleManager);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -95,3 +99,15 @@ app.UseStaticFiles();
 app.MapControllers();
 
 app.Run();
+async Task EnsureRolesExist(RoleManager<IdentityRole<int>> roleManager)
+{
+    string[] roles = { "Admin", "Doctor", "Patient" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole<int>(role));
+        }
+    }
+}

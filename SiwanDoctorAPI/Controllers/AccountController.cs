@@ -101,6 +101,21 @@ namespace SiwanDoctorAPI.Controllers
 
             return Ok(response);
         }
+        [HttpPost("update-role")]
+        public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleRequest model)
+        {
+            if (string.IsNullOrEmpty(model.UserId) || string.IsNullOrEmpty(model.NewRole))
+            {
+                return BadRequest(new { message = "UserId and NewRole are required." });
+            }
 
+            var result = await _loginAppServices.UpdateUserRoleAsync(model.UserId, model.NewRole);
+
+            if (result.status)
+            {
+                return Ok(result);
+            }
+            return StatusCode(result.response, result);
+        }
     }
 }
