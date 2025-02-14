@@ -43,6 +43,7 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<VideoDoctorTimeSlot> videoDoctorTimeSlots { get; set; }
         public DbSet<SocialMedia> socialMedias { get; set; }
         public DbSet<WebPage> webPages { get; set; }
+        public DbSet<DoctorPrescribeMdicines> doctorPrescribeMdicines { get; set; }
         public enum UserType
         {
             Doctor = 1,

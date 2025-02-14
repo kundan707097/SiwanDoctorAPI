@@ -3,6 +3,8 @@ using SiwanDoctorAPI.AppServices.WebPageAppServices;
 
 namespace SiwanDoctorAPI.Controllers
 {
+    [Route("api/auth")]
+    [ApiController]
     public class SettingController : ControllerBase
     {
         private readonly ISettingAppServices _settingAppServices;

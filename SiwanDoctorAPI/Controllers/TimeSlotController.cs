@@ -8,6 +8,7 @@ namespace SiwanDoctorAPI.Controllers
 {
     //[Authorize]
     [Route("api/auth")]
+    [ApiController]
     public class TimeSlotController : ControllerBase
     {
         private readonly ITimeSlotAppServices _timeSlotAppServices;
