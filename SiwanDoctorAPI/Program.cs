@@ -15,6 +15,7 @@ using SiwanDoctorAPI.AppServices.RegistrationAppServices;
 using SiwanDoctorAPI.AppServices.SocialMediaAppservices;
 using SiwanDoctorAPI.AppServices.SpecializationAppServices;
 using SiwanDoctorAPI.AppServices.TimeSlotAppServices;
+using SiwanDoctorAPI.AppServices.VideoMettingAppServices;
 using SiwanDoctorAPI.AppServices.WebPageAppServices;
 using SiwanDoctorAPI.DbConnection;
 using System.Text;
@@ -52,7 +53,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
+builder.Services.AddHttpClient();
 builder.Services.AddTransient<ILoginAppServices, LoginAppServices>();
 builder.Services.AddTransient<IRegistrationAppService, RegistrationAppService>();
 builder.Services.AddTransient<IPatientAppServices , PatientAppServices>();
@@ -67,6 +68,7 @@ builder.Services.AddTransient<IAppointmentAppServices , AppointmentAppServices>(
 builder.Services.AddTransient<ISocialMediaAppservices, SocialMediaAppservices>();
 builder.Services.AddTransient<ISettingAppServices, SettingAppServices>();
 builder.Services.AddTransient<IDoctorPrescribeMdicinesAppServices , DoctorPrescribeMdicinesAppServices>();
+builder.Services.AddTransient<IVideoMettingAppServices, VideoMettingAppServices>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

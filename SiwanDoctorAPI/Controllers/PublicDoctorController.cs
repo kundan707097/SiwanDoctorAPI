@@ -92,7 +92,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("Get_Booked_time_Slot_By_DoctId")]
-        public async Task<IActionResult> GetBookedTimeSlotByDoctor(BookedTimeSlotByDoctorRequest request)
+        public async Task<IActionResult> GetBookedTimeSlotByDoctor([FromQuery] BookedTimeSlotByDoctorRequest request)
         {
             var appointments = await _publicDoctorAppServices.GetBookedTimeSlot(request);
             if (appointments == null || appointments.data.Count == 0)

@@ -14,7 +14,7 @@ namespace SiwanDoctorAPI.Controllers
             _appointmentAppServices = appointmentAppServices;
         }
 
-        [HttpPost]
+        [HttpPost("add_appointment")]
         public async Task<IActionResult> AddAppointment([FromForm] AppointmentRequest request)
         {
             if (request == null)

@@ -116,7 +116,7 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
                 //}
 
                 // Create a new timeslot entity
-                var timeSlot = new DoctorTimeSlot
+                var timeSlot = new VideoDoctorTimeSlot
                 {
                     doct_id = request.doct_id,
                     TimeStart = request.time_start,
@@ -127,7 +127,7 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
                 };
 
                 // Add to the database
-                _applicationDbContext.Doctor_TimeSlots.Add(timeSlot);
+                _applicationDbContext.videoDoctorTimeSlots.Add(timeSlot);
                 await _applicationDbContext.SaveChangesAsync();
 
                 return new ServiceResponse
