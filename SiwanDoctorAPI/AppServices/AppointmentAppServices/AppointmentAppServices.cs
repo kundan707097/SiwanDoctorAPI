@@ -30,7 +30,7 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
             {
                 var appointment = new Appointment
                 {
-                    FK_PatientId = request.patient_id,
+                    UserFamilyMemberId = request.patient_id,
                     Status = request.status,
                     Date = request.date,
                     TimeSlots = request.time_slots,
@@ -83,7 +83,7 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
         {
             // Get appointments from the database
             var appointments = await _applicationDbContext.appointments
-                .Where(x => x.FK_PatientId == userId)
+                .Where(x => x.UserId == userId)
                 .Select(a => new AppointmentDate
                 {
                     id = a.Id,
@@ -102,8 +102,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = a.CreationTime.ToString(),
                     updated_at = a.LastModificationTime.ToString(),
                     user_id = a.UserId,
-                    patient_f_name = a.patient_Details.FirstName,
-                    patient_l_name = a.patient_Details.LastName,
+                    patient_f_name = a.userFamilyMember.F_Name,
+                    patient_l_name = a.userFamilyMember.L_Name,
                     //dept_title = a.DepartmentTitle,
                     doct_f_name = a.doctor_Details.FirstName,
                     doct_l_name = a.doctor_Details.LastName,
@@ -122,7 +122,7 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                 .Select(x => new AppointmentDataByappointmentId
                 {
                     id = x.Id,
-                    patient_id = x.FK_PatientId,
+                    patient_id = x.UserFamilyMemberId,
                     status = x.Status,
                     date = x.Date,
                     time_slots = x.TimeSlots,
@@ -137,10 +137,10 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = x.CreationTime.ToString(),
                     updated_at = x.LastModificationTime.ToString(),
                     user_id = x.UserId,
-                    patient_f_name = x.patient_Details.FirstName,
-                    patient_l_name = x.patient_Details.LastName,
-                    patient_gender = x.patient_Details.Gender,
-                    patient_phone = x.patient_Details.Phone,
+                    patient_f_name = x.userFamilyMember.F_Name,
+                    patient_l_name = x.userFamilyMember.L_Name,
+                    patient_gender = x.userFamilyMember.Gender,
+                    patient_phone = x.userFamilyMember.Phone,
                     //DeptTitle = x.,
                     doct_f_name = x.doctor_Details.FirstName,
                     doct_l_name = x.doctor_Details.LastName,
@@ -216,7 +216,7 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
             var appointmentData = filteredAppointments.Select(x => new GetAppointmentsByDateRange
             {
                 id = x.Id,
-                patient_id = x.FK_PatientId,
+                patient_id = x.UserFamilyMemberId,
                 status = x.Status,
                 date = x.Date,
                 time_slots = x.TimeSlots,
@@ -231,10 +231,10 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                 created_at = x.CreationTime.ToString(), // Assuming CreationTime is DateTime?, convert it to string
                 updated_at = x.LastModificationTime?.ToString(), // Assuming LastModificationTime is DateTime?, convert it to string
                 user_id = x.UserId,
-                patient_f_name = x.patient_Details.FirstName,
-                patient_l_name = x.patient_Details.LastName,
-                patient_phone = x.patient_Details.Phone,
-                patient_gender = x.patient_Details.Gender,
+                patient_f_name = x.userFamilyMember.F_Name,
+                patient_l_name = x.userFamilyMember.L_Name,
+                patient_phone = x.userFamilyMember.Phone,
+                patient_gender = x.userFamilyMember.Gender,
                 //dept_title = x.DeptTitle,
                 doct_f_name = x.doctor_Details?.FirstName, // Make sure doctor_Details is properly included
                 doct_l_name = x.doctor_Details?.LastName,
@@ -275,8 +275,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = a.CreationTime.ToString(),
                     updated_at = a.LastModificationTime.ToString(),
                     user_id = a.UserId,
-                    patient_f_name = a.patient_Details.FirstName,
-                    patient_l_name = a.patient_Details.LastName,
+                    patient_f_name = a.userFamilyMember.F_Name,
+                    patient_l_name = a.userFamilyMember.L_Name,
                     //dept_title = a.DepartmentTitle,
                     doct_f_name = a.doctor_Details.FirstName,
                     doct_l_name = a.doctor_Details.LastName,
@@ -300,7 +300,7 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                 .Select(x => new AppointmentDate
                 {
                     id = x.Id,
-                    patient_id = x.FK_PatientId,
+                    patient_id = x.UserFamilyMemberId,
                     status = x.Status,
                     date = x.Date,
                     time_slots = x.TimeSlots,
@@ -315,8 +315,8 @@ namespace SiwanDoctorAPI.AppServices.AppointmentAppServices
                     created_at = x.CreationTime.ToString(),
                     updated_at = x.LastModificationTime.ToString(),
                     user_id = x.UserId,
-                    patient_f_name = x.patient_Details.FirstName,
-                    patient_l_name = x.patient_Details.LastName,
+                    patient_f_name = x.userFamilyMember.F_Name,
+                    patient_l_name = x.userFamilyMember.L_Name,
                     //dept_title = x.doctor_Details.Department,
                     doct_f_name = x.doctor_Details.FirstName,
                     doct_l_name = x.doctor_Details.LastName,

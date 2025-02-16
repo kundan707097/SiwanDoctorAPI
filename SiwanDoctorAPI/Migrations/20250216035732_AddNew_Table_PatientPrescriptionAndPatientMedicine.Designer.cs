@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250216035732_AddNew_Table_PatientPrescriptionAndPatientMedicine")]
+    partial class AddNewTablePatientPrescriptionAndPatientMedicine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,6 +331,9 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<int>("FK_DoctId")
                         .HasColumnType("int");
 
+                    b.Property<int>("FK_PatientId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Fee")
                         .HasColumnType("decimal(18,2)");
 
@@ -385,9 +391,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<decimal>("UnitTotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserFamilyMemberId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -395,9 +398,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasIndex("FK_DoctId");
 
-                    b.HasIndex("UserFamilyMemberId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("FK_PatientId");
 
                     b.ToTable("Patient_Appointments");
                 });
@@ -1289,23 +1290,15 @@ namespace SiwanDoctorAPI.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.UserFamilyMember", "userFamilyMember")
-                        .WithMany()
-                        .HasForeignKey("UserFamilyMemberId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation.Patient_Details", "patient_Details")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("FK_PatientId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("doctor_Details");
 
                     b.Navigation("patient_Details");
-
-                    b.Navigation("userFamilyMember");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.DoctorPrescribeMdicines", b =>

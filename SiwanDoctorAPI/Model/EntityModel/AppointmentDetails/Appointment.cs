@@ -9,9 +9,12 @@ namespace SiwanDoctorAPI.Model.EntityModel.AppointmentDetails
     [Table("Patient_Appointments")]
     public class Appointment : FullAuditedEntity
     {
-        [ForeignKey("FK_PatientId")]
-        public virtual Patient_Details patient_Details { get; set; }
-        public virtual int FK_PatientId { get; set; }
+        
+
+        public int UserFamilyMemberId { get; set; }
+        [ForeignKey("UserFamilyMemberId")]
+        public UserFamilyMember userFamilyMember { get; set; }
+
         public string? Status { get; set; }
         public string? Date { get; set; }
         public string? TimeSlots { get; set; }
@@ -27,6 +30,10 @@ namespace SiwanDoctorAPI.Model.EntityModel.AppointmentDetails
         public decimal TotalAmount { get; set; }
         public string? InvoiceDescription { get; set; }
         public string? PaymentMethod { get; set; }
+       
+
+        [ForeignKey("UserId")]
+        public virtual Patient_Details patient_Details { get; set; }
         public int UserId { get; set; }
         public string? PaymentTransactionId { get; set; }
         public string? PaymentStatus { get; set; }

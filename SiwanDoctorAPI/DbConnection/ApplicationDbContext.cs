@@ -7,6 +7,7 @@ using SiwanDoctorAPI.Model.EntityModel.Department;
 using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
+using SiwanDoctorAPI.Model.EntityModel.PatientPrescriptionEntity.cs;
 using SiwanDoctorAPI.Model.EntityModel.SettingEntity;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
@@ -44,6 +45,9 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<SocialMedia> socialMedias { get; set; }
         public DbSet<WebPage> webPages { get; set; }
         public DbSet<DoctorPrescribeMdicines> doctorPrescribeMdicines { get; set; }
+        public DbSet<PatientPrescription> patientPrescriptions { get; set; }
+
+        public DbSet<PatientMedicine> patientMedicines { get; set; }
         public enum UserType
         {
             Doctor = 1,
