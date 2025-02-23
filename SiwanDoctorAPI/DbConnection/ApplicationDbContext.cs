@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.Model.EntityModel.AdminEntity;
 using SiwanDoctorAPI.Model.EntityModel.AppointmentDetails;
-using SiwanDoctorAPI.Model.EntityModel.Department;
 using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;

@@ -10,13 +10,13 @@
     public class DoctorDTO
     {
         public int id { get; set; }
-        public int stop_booking { get; set; }
+        public bool stop_booking { get; set; }
         public int user_id { get; set; }
-        public int department { get; set; }
+        public int? department { get; set; }
         public string? description { get; set; }
         public string? specialization { get; set; }
         public int? ex_year { get; set; }
-        public int active { get; set; }
+        public bool? active { get; set; }
         public int video_appointment { get; set; }
         public int clinic_appointment { get; set; }
         public int emergency_appointment { get; set; }
@@ -40,9 +40,14 @@
         public string? email { get; set; }
         public string? image { get; set; }
         public string? department_name { get; set; }
-        public int total_review_points { get; set; }
+        public double total_review_points { get; set; }
         public int number_of_reviews { get; set; }
         public string? average_rating { get; set; }
         public int total_appointment_done { get; set; }
+
+        public string? address { get; set; }
+        public string? city { get; set; }
+        public string? state { get; set; }
+        public string? postal_code { get; set; }
     }
 }

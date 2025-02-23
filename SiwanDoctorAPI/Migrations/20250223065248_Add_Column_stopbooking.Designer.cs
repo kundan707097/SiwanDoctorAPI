@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223065248_Add_Column_stopbooking")]
+    partial class AddColumnstopbooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -402,7 +405,7 @@ namespace SiwanDoctorAPI.Migrations
                     b.ToTable("Patient_Appointments");
                 });
 
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.Department", b =>
+            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Department.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,6 +449,43 @@ namespace SiwanDoctorAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctor_Department");
+                });
+
+            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Department.Specialization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Doctor_Specialization");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.DoctorPrescribeMdicines", b =>
@@ -550,43 +590,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.HasIndex("doct_id");
 
                     b.ToTable("Doctor_TimeSlot");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.Specialization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Doctor_Specialization");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.VideoDoctorTimeSlot", b =>
@@ -702,9 +705,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<bool?>("AdminVerifyToDoctors")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("ClinicAppointment")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -720,17 +720,14 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmergencyAppointment")
-                        .HasColumnType("bit");
 
                     b.Property<decimal?>("EmergencyFee")
                         .HasColumnType("decimal(18,2)");
@@ -795,9 +792,6 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("VideoAppointment")
-                        .HasColumnType("bit");
-
                     b.Property<decimal?>("VideoFee")
                         .HasColumnType("decimal(18,2)");
 
@@ -823,8 +817,6 @@ namespace SiwanDoctorAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("UserId");
 
@@ -1358,7 +1350,7 @@ namespace SiwanDoctorAPI.Migrations
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.DoctorReview", b =>
                 {
                     b.HasOne("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", "doctor_Details")
-                        .WithMany("DoctorReview")
+                        .WithMany()
                         .HasForeignKey("FK_DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1368,11 +1360,6 @@ namespace SiwanDoctorAPI.Migrations
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", b =>
                 {
-                    b.HasOne("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.Department", "department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("SiwanDoctorAPI.DbConnection.ApplicationDbContext+ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1380,8 +1367,6 @@ namespace SiwanDoctorAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-
-                    b.Navigation("department");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.PatientPrescriptionEntity.cs.PatientMedicine", b =>
@@ -1453,11 +1438,6 @@ namespace SiwanDoctorAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("PatientDetails");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", b =>
-                {
-                    b.Navigation("DoctorReview");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.PatientPrescriptionEntity.cs.PatientPrescription", b =>

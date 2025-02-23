@@ -1,6 +1,6 @@
 ﻿using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
-using SiwanDoctorAPI.Model.EntityModel.Department;
+
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities.Auditing;
 

@@ -86,7 +86,7 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
                 userRecord.DateOfBirth = doctorDto.dob;
             }
 
-            doctor.Department = doctorDto.department.ToString();
+            doctor.DepartmentId = doctorDto.department;
             doctor.ExperienceYears = doctorDto.ex_year;
             doctor.IsActive = doctorDto.active;
             doctor.Description = doctorDto.description;

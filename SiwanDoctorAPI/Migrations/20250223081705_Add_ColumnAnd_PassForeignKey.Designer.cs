@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiwanDoctorAPI.DbConnection;
 
@@ -11,9 +12,11 @@ using SiwanDoctorAPI.DbConnection;
 namespace SiwanDoctorAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223081705_Add_ColumnAnd_PassForeignKey")]
+    partial class AddColumnAndPassForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -720,7 +723,10 @@ namespace SiwanDoctorAPI.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DeptId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -824,7 +830,7 @@ namespace SiwanDoctorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DeptId");
 
                     b.HasIndex("UserId");
 
@@ -1358,7 +1364,7 @@ namespace SiwanDoctorAPI.Migrations
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.DoctorReview", b =>
                 {
                     b.HasOne("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", "doctor_Details")
-                        .WithMany("DoctorReview")
+                        .WithMany()
                         .HasForeignKey("FK_DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1370,7 +1376,7 @@ namespace SiwanDoctorAPI.Migrations
                 {
                     b.HasOne("SiwanDoctorAPI.Model.EntityModel.DoctorEntity.Department", "department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DeptId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SiwanDoctorAPI.DbConnection.ApplicationDbContext+ApplicationUser", "User")
@@ -1453,11 +1459,6 @@ namespace SiwanDoctorAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("PatientDetails");
-                });
-
-            modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation.Doctor_Details", b =>
-                {
-                    b.Navigation("DoctorReview");
                 });
 
             modelBuilder.Entity("SiwanDoctorAPI.Model.EntityModel.PatientPrescriptionEntity.cs.PatientPrescription", b =>

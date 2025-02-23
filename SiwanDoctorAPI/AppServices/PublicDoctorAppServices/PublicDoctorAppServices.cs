@@ -25,7 +25,10 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
         {
             var response = new GetDoctorResponse();
 
-            var doctors = await _applicationDbContext.Doctor_Details.Where(x => x.IsDeleted == false)
+            var doctors = await _applicationDbContext.Doctor_Details
+                .Where(x => !x.IsDeleted)
+                .Include(d => d.department) // Include department details
+                .Include(d => d.DoctorReview) // Ensure this is a collection
                 .ToListAsync();
 
             if (doctors == null || !doctors.Any())
@@ -36,43 +39,52 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
             }
 
             response.response = 200;
-            response.data = doctors.Select(doctor => new DoctorDTO
+            response.data = doctors.Select(d => new DoctorDTO
             {
-                id = doctor.Id,
-                //stop_booking = doctor.StopBooking,
-                user_id = doctor.UserId,
-                //department = doctor.Department.ToString(),
-                description = doctor.Description,
-                specialization = doctor.Specialization,
-                ex_year = doctor.ExperienceYears,
-                //active = doctor.IsActive,
-                //video_appointment = doctor.VideoAppointment,
-                //clinic_appointment = doctor.ClinicAppointment,
-                //emergency_appointment = doctor.EmergencyAppointment,
-                opd_fee = doctor.OpdFee,
-                video_fee = doctor.VideoFee,
-                emg_fee = doctor.EmergencyFee,
-                zoom_client_id = doctor.ZoomClientId,
-                zoom_secret_id = doctor.ZoomSecretId,
-                insta_link = doctor.InstagramLink,
-                fb_linik = doctor.FacebookLink,
-                twitter_link = doctor.TwitterLink,
-                you_tube_link = doctor.YouTubeLink,
-                created_at = doctor.CreationTime,
-                //updated_at = doctor.LastModificationTime.ToString(),
-                f_name = doctor.FirstName,
-                l_name = doctor.LastName,
-                phone = doctor.Phone,
-                isd_code = doctor.ISDCode,
-                gender = doctor.Gender,
-                //dob = doctor.DateOfBirth.ToString(),
-                email = doctor.Email,
-                image = doctor.ProfileImagePath,
-                department_name = doctor.Department,
-                //total_review_points = doctor.TotalReviewPoints,
-                //number_of_reviews = doctor.NumberOfReviews,
-                //average_rating = doctor.AverageRating.ToString("0.00"),
-                //total_appointment_done = doctor.TotalAppointmentDone
+                id = d.Id,
+                stop_booking = d.StopBooking,
+                user_id = d.UserId,
+                department = d.DepartmentId,
+                description = d.Description,
+                specialization = d.Specialization,
+                ex_year = d.ExperienceYears,
+                active = d.IsActive,
+                video_appointment = d.VideoAppointment ? 1 : 0,
+                clinic_appointment = d.ClinicAppointment ? 1 : 0,
+                emergency_appointment = d.EmergencyAppointment ? 1 : 0,
+                opd_fee = d.OpdFee,
+                video_fee = d.VideoFee,
+                emg_fee = d.EmergencyFee,
+                zoom_client_id = d.ZoomClientId,
+                zoom_secret_id = d.ZoomSecretId,
+                insta_link = d.InstagramLink,
+                fb_linik = d.FacebookLink,
+                twitter_link = d.TwitterLink,
+                you_tube_link = d.YouTubeLink,
+                created_at = d.CreationTime,
+                f_name = d.FirstName,
+                l_name = d.LastName,
+                phone = d.Phone,
+                isd_code = d.ISDCode,
+                gender = d.Gender,
+                dob = d.DateOfBirth ?? DateTime.MinValue,
+                email = d.Email,
+                image = d.ProfileImagePath,
+                address = d.doctor_Address,
+                city = d.city,
+                postal_code = d.PostalCode,
+                state = d.State,
+                department_name = d.department?.Title,
+
+                total_review_points = d.DoctorReview != null ? d.DoctorReview.Sum(r => r.Points) : 0, // Ensure it's a collection
+                number_of_reviews = d.DoctorReview?.Count() ?? 0, // Count the number of reviews
+                average_rating = (d.DoctorReview != null && d.DoctorReview.Any())
+                    ? d.DoctorReview.Average(r => r.Points).ToString("0.00")
+                    : "0.00", // Average review points with proper check
+
+                total_appointment_done = d.DoctorReview != null
+                    ? d.DoctorReview.Select(r => r.AppointmentId).Distinct().Count()
+                    : 0 // Ensure we get a unique appointment count
             }).ToList();
 
             return response;
@@ -83,7 +95,8 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
             var response = new GetDoctorResponse();
 
             var doctor = await _applicationDbContext.Doctor_Details
-                .FirstOrDefaultAsync(d => d.Id == id && d.IsDeleted ==false);
+                .Include(d => d.department)
+                .FirstOrDefaultAsync(d => d.Id == id && d.IsDeleted == false);
 
             if (doctor == null)
             {
@@ -92,46 +105,57 @@ namespace SiwanDoctorAPI.AppServices.PublicDoctorAppServices
                 return response;
             }
 
+            // Fetch doctor's reviews and calculate review stats
+            var reviews = await _applicationDbContext.doctorReviews
+                .Where(r => r.FK_DoctorId == id)
+                .ToListAsync();
+
+            double totalReviewPoints = reviews.Sum(r => r.Points);
+            int numberOfReviews = reviews.Count;
+            string averageRating = numberOfReviews > 0 ? (totalReviewPoints / numberOfReviews).ToString("0.00") : "0.00";
+
             response.response = 200;
             response.data = new List<DoctorDTO>
             {
                 new DoctorDTO
                 {
                     id = doctor.Id,
-                        //stop_booking = doctor.StopBooking,
-                        user_id = doctor.UserId,
-                        //department = doctor.Department.ToString(),
-                        description = doctor.Description,
-                        specialization = doctor.Specialization,
-                        ex_year = doctor.ExperienceYears,
-                        //active = doctor.IsActive,
-                        //video_appointment = doctor.VideoAppointment,
-                        //clinic_appointment = doctor.ClinicAppointment,
-                        //emergency_appointment = doctor.EmergencyAppointment,
-                        opd_fee = doctor.OpdFee,
-                        video_fee = doctor.VideoFee,
-                        emg_fee = doctor.EmergencyFee,
-                        zoom_client_id = doctor.ZoomClientId,
-                        zoom_secret_id = doctor.ZoomSecretId,
-                        insta_link = doctor.InstagramLink,
-                        fb_linik = doctor.FacebookLink,
-                        twitter_link = doctor.TwitterLink,
-                        you_tube_link = doctor.YouTubeLink,
-                        created_at = doctor.CreationTime,
-                        //updated_at = doctor.LastModificationTime.ToString(),
-                        f_name = doctor.FirstName,
-                        l_name = doctor.LastName,
-                        phone = doctor.Phone,
-                        isd_code = doctor.ISDCode,
-                        gender = doctor.Gender,
-                        //dob = doctor.DateOfBirth.ToString(),
-                        email = doctor.Email,
-                        image = doctor.ProfileImagePath,
-                        department_name = doctor.Department,
-                        //total_review_points = doctor.TotalReviewPoints,
-                        //number_of_reviews = doctor.NumberOfReviews,
-                        //average_rating = doctor.AverageRating.ToString("0.00"),
-                        //total_appointment_done = doctor.TotalAppointmentDone
+                    stop_booking= doctor.StopBooking,
+                    user_id = doctor.UserId,
+                    department = doctor.DepartmentId,
+                    description = doctor.Description,
+                    specialization = doctor.Specialization,
+                    ex_year = doctor.ExperienceYears,
+                    active = doctor.IsActive,
+                    video_appointment = doctor.VideoAppointment ? 1 : 0,
+                    clinic_appointment = doctor.ClinicAppointment ? 1 : 0,
+                    emergency_appointment = doctor.EmergencyAppointment ? 1 : 0,
+                    opd_fee = doctor.OpdFee,
+                    video_fee = doctor.VideoFee,
+                    emg_fee = doctor.EmergencyFee,
+                    zoom_client_id = doctor.ZoomClientId,
+                    zoom_secret_id = doctor.ZoomSecretId,
+                    insta_link = doctor.InstagramLink,
+                    fb_linik = doctor.FacebookLink,
+                    twitter_link = doctor.TwitterLink,
+                    you_tube_link = doctor.YouTubeLink,
+                    created_at = doctor.CreationTime,
+                    f_name = doctor.FirstName,
+                    l_name = doctor.LastName,
+                    phone = doctor.Phone,
+                    isd_code = doctor.ISDCode,
+                    gender = doctor.Gender,
+                    dob = doctor.DateOfBirth ?? DateTime.MinValue,
+                    email = doctor.Email,
+                    image = doctor.ProfileImagePath,
+                    address = doctor.doctor_Address,
+                    city = doctor.city,
+                    postal_code = doctor.PostalCode,
+                    state = doctor.State,
+                    department_name = doctor.department?.Title, // Assuming department has a Title
+                    total_review_points = totalReviewPoints,
+                    number_of_reviews = numberOfReviews,
+                    average_rating = averageRating
                 }
             };
 

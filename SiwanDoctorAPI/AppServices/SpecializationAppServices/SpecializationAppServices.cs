@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SiwanDoctorAPI.DbConnection;
-using SiwanDoctorAPI.Model.EntityModel.Department;
+using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.InputDTOModel.SpecializationInputDTO;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 

@@ -1,7 +1,7 @@
 ﻿using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities.Auditing;
-
+using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 namespace SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation
 {
     [Table("Doctor_Information")]
@@ -14,7 +14,7 @@ namespace SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation
         public string? Email { get; set; } 
         public string? FirstName { get; set; } 
         public string? LastName { get; set; } 
-        public string? Department { get; set; } 
+        
         public int?   ExperienceYears { get; set; } 
         public bool? IsActive { get; set; } 
         public string? ISDCode { get; set; } 
@@ -42,5 +42,16 @@ namespace SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation
         public string? city { get; set; }
         public string? State { get; set; }
         public string? Description { get; set; }
+        public bool StopBooking { get; set; }
+
+        public bool VideoAppointment {  get; set; }
+        public bool ClinicAppointment { get; set; }
+        public bool EmergencyAppointment { get; set; }
+        public int? DepartmentId { get; set; }  // Make nullable
+
+        [ForeignKey("DepartmentId")]
+        public virtual Department? department { get; set; }
+
+        public virtual ICollection<DoctorReview> DoctorReview { get; set; }
     }
 }
