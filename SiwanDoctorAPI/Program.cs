@@ -105,11 +105,12 @@ using (var scope = app.Services.CreateScope())
     await EnsureRolesExist(roleManager);
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger(); // Enable Swagger generation
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+    c.RoutePrefix = string.Empty; // Makes Swagger UI accessible at the root URL
+});
 
 app.UseHttpsRedirection();
 app.UseCors("AllowVercel");
