@@ -86,15 +86,26 @@ builder.Services.AddSwaggerGen();
 //    });
 //});
 
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowVercel",
+//        policy =>
+//        {
+//            policy.WithOrigins("https://siwan-doctor-frontend.vercel.app") // Allow Vercel
+//                  .AllowAnyMethod()
+//                  .AllowAnyHeader();
+//        });
+//});
+
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowVercel",
-        policy =>
-        {
-            policy.WithOrigins("https://siwan-doctor-frontend.vercel.app") // Allow Vercel
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   // Allow requests from any domain
+              .AllowAnyMethod()   // Allow GET, POST, PUT, DELETE, etc.
+              .AllowAnyHeader();  // Allow all headers
+    });
 });
 
 
@@ -113,7 +124,8 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
-app.UseCors("AllowVercel");
+//app.UseCors("AllowVercel");
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
