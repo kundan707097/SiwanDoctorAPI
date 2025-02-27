@@ -45,5 +45,7 @@ namespace SiwanDoctorAPI.Model.EntityModel.AppointmentDetails
         public string? Tax { get; set; }
         public decimal UnitTotalAmount { get; set; }
         public string? Source { get; set; }
+
+        public string? currentcancelreqstatus { get; set; }
     }
 }

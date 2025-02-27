@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SiwanDoctorAPI.AppServices.AppointmentAppServices;
+using SiwanDoctorAPI.AppServices.CouponAppService;
+using SiwanDoctorAPI.AppServices.DashboardAppService;
 using SiwanDoctorAPI.AppServices.DepartmentAppServices;
 using SiwanDoctorAPI.AppServices.DoctorAppServices;
 using SiwanDoctorAPI.AppServices.DoctorPrescribeMdicinesAppServices;
@@ -72,6 +74,8 @@ builder.Services.AddTransient<ISettingAppServices, SettingAppServices>();
 builder.Services.AddTransient<IDoctorPrescribeMdicinesAppServices , DoctorPrescribeMdicinesAppServices>();
 builder.Services.AddTransient<IVideoMettingAppServices, VideoMettingAppServices>();
 builder.Services.AddTransient<IPatientPrescriptionAppServices, PatientPrescriptionAppServices>();
+builder.Services.AddTransient<ICouponAppService, CouponAppService>();
+builder.Services.AddTransient<IDashboardAppService, DashboardAppService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -122,6 +126,13 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
     c.RoutePrefix = string.Empty; // Makes Swagger UI accessible at the root URL
 });
+
+
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
 app.UseHttpsRedirection();
 //app.UseCors("AllowVercel");

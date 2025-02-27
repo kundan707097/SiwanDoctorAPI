@@ -47,6 +47,8 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<PatientPrescription> patientPrescriptions { get; set; }
 
         public DbSet<PatientMedicine> patientMedicines { get; set; }
+
+        public DbSet<Coupon> coupons { get; set; }
         public enum UserType
         {
             Doctor = 1,
