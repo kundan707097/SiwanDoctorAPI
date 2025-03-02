@@ -151,7 +151,7 @@ namespace SiwanDoctorAPI.AppServices.CouponAppService
             {
                 return new CouponValidationResponse
                 {
-                    response = 200,
+                    response = 201,
                     status = false,
                     message = "Invalid Coupon",
                     data = null

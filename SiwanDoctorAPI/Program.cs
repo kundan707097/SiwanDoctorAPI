@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SiwanDoctorAPI.AppServices.AdminAppServices;
 using SiwanDoctorAPI.AppServices.AppointmentAppServices;
 using SiwanDoctorAPI.AppServices.CouponAppService;
 using SiwanDoctorAPI.AppServices.DashboardAppService;
@@ -14,6 +15,7 @@ using SiwanDoctorAPI.AppServices.FamilyVitalsAppServices;
 using SiwanDoctorAPI.AppServices.LoginAppServices;
 using SiwanDoctorAPI.AppServices.PatientAppServices;
 using SiwanDoctorAPI.AppServices.PatientPrescriptionAppServices;
+using SiwanDoctorAPI.AppServices.PaymentAppServices;
 using SiwanDoctorAPI.AppServices.PublicDoctorAppServices;
 using SiwanDoctorAPI.AppServices.RegistrationAppServices;
 using SiwanDoctorAPI.AppServices.SocialMediaAppservices;
@@ -76,6 +78,8 @@ builder.Services.AddTransient<IVideoMettingAppServices, VideoMettingAppServices>
 builder.Services.AddTransient<IPatientPrescriptionAppServices, PatientPrescriptionAppServices>();
 builder.Services.AddTransient<ICouponAppService, CouponAppService>();
 builder.Services.AddTransient<IDashboardAppService, DashboardAppService>();
+builder.Services.AddTransient<IPaymentAppServices, PaymentAppServices>();
+builder.Services.AddTransient<IAdminAppServices, AdminAppServices>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

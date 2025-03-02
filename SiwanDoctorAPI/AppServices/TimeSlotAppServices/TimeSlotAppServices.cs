@@ -55,7 +55,7 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
 
                 if (isConflict)
                 {
-                    response.response = 409; 
+                    response.response = 201; 
                     response.status = false;
                     response.message = "Time slot already exists or overlaps with another slot.";
                     return response;
@@ -74,7 +74,7 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
                 await _applicationDbContext.SaveChangesAsync();
 
                 // Successful response
-                response.response = 201; 
+                response.response = 200; 
                 response.status = true;
                 response.message = "Time slot added successfully";
             }
@@ -132,7 +132,7 @@ namespace SiwanDoctorAPI.AppServices.TimeSlotAppServices
 
                 return new ServiceResponse
                 {
-                    response = 202,
+                    response = 200,
                     status = true,
                     message = "Video created successfully"
                 };

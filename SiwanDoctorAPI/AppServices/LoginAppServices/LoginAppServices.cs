@@ -162,9 +162,18 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
             try
             {
                 var user = await _userManager.FindByNameAsync(phoneNumber);
+                if (user == null)
+                {
+                    return new LoginResponse
+                    {
+                        response = 201,
+                        status = false,
+                        message = "Mobile Number Does not exist"
+                    };
+                }
                 var roles = await _userManager.GetRolesAsync(user);
                 var token = GenerateToken(user, roles);
-
+                
                 var role = roles.FirstOrDefault();
                 UserData userDetails = null;
                 if (role == "Doctor")

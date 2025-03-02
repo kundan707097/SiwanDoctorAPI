@@ -306,7 +306,7 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
             {
                 return new DeleteDepartmentResponse
                 {
-                    response = 201,
+                    response = 401,
                     status = false,
                     message = "Department not found."
                 };
@@ -317,7 +317,7 @@ namespace SiwanDoctorAPI.AppServices.DepartmentAppServices
 
             return new DeleteDepartmentResponse
             {
-                response = 201,
+                response = 200,
                 status = true,
                 message = "Department deleted successfully."
             };

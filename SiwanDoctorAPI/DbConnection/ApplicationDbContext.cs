@@ -7,6 +7,7 @@ using SiwanDoctorAPI.Model.EntityModel.Doctor_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.DoctorEntity;
 using SiwanDoctorAPI.Model.EntityModel.Patient_DetailsInformation;
 using SiwanDoctorAPI.Model.EntityModel.PatientPrescriptionEntity.cs;
+using SiwanDoctorAPI.Model.EntityModel.Payment_Entity;
 using SiwanDoctorAPI.Model.EntityModel.SettingEntity;
 using static SiwanDoctorAPI.DbConnection.ApplicationDbContext;
 
@@ -49,6 +50,7 @@ namespace SiwanDoctorAPI.DbConnection
         public DbSet<PatientMedicine> patientMedicines { get; set; }
 
         public DbSet<Coupon> coupons { get; set; }
+        public DbSet<PaymentDetails> paymentDetails {  get; set; } 
         public enum UserType
         {
             Doctor = 1,

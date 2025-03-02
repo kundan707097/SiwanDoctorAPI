@@ -55,7 +55,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
             if (!string.IsNullOrEmpty(updatePatientModel.email))
             {
                 existingUser.Email = updatePatientModel.email;
-                existingUser.UserName = updatePatientModel.email;
+                existingUser.Email = updatePatientModel.email;
                 patientUser.Email = updatePatientModel.email;
             }
 
@@ -291,7 +291,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
                 _applicationDbContext.User_FamilyMembers.Add(familyMember);
                 await _applicationDbContext.SaveChangesAsync();
 
-                response.response = 201;
+                response.response = 200;
                 response.status = true;
                 response.message = "Family member added successfully";
             }

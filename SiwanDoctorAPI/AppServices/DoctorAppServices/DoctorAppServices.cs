@@ -40,11 +40,12 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
                 };
             }
 
-            var userRecord = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == doctor.Id);
+            var userRecord = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == doctor.UserId);
             if (userRecord == null)
             {
                 return new UpdateDoctorResponse
                 {
+                    response = 201,
                     status = false,
                     message = "Doctor details not found."
                 };
@@ -74,6 +75,7 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
             {
                 doctor.Phone = doctorDto.phone;
                 userRecord.PhoneNumber = doctorDto.phone;
+                userRecord.UserName = doctorDto.phone;
             }
             if (!string.IsNullOrEmpty(doctorDto.gender))
             {
