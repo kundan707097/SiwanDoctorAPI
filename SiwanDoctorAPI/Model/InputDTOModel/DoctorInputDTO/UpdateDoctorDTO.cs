@@ -29,8 +29,8 @@
         public string? twitter_link { get; set; }
         public string? you_tube_link { get; set; }
         public string? insta_link { get; set; }
-        public decimal opd_fee { get; set; }
-        public decimal video_fee { get; set; }
-        public decimal emg_fee { get; set; }
+        public decimal? opd_fee { get; set; }
+        public decimal? video_fee { get; set; }
+        public decimal? emg_fee { get; set; }
     }
 }

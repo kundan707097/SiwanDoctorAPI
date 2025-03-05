@@ -95,7 +95,7 @@ namespace SiwanDoctorAPI.Controllers
 
             if (vitals == null || vitals.Count == 0)
             {
-                return StatusCode(201, new { message = "No vitals found for this user" });
+                return NotFound(new { response = 404, message = "No vitals found for this user" });
             }
 
             // Prepare the response

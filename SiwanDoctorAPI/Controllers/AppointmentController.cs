@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using SiwanDoctorAPI.AppServices.AppointmentAppServices;
 using SiwanDoctorAPI.Model.InputDTOModel.AppointmentInputDTO;
 
@@ -61,7 +62,7 @@ namespace SiwanDoctorAPI.Controllers
 
             if (appointment == null || appointment.data == null)
             {
-                return NotFound(new { Message = "Appointment not found." });
+                return NotFound(new { Message = "Appointment not found.",  response = 400 });
             }
 
             return Ok(appointment);

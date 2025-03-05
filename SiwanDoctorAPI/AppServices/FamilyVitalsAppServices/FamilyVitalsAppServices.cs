@@ -27,13 +27,13 @@ namespace SiwanDoctorAPI.AppServices.FamilyVitalsAppServices
                 {
                     FK_patient_Details = input.user_id,
                     FK_userFamilyMember = input.family_member_id,
-                    BpSystolic = input.bp_systolic,
-                    BpDiastolic = input.bp_diastolic,
-                    Weight = input.weight,
-                    Spo2 = input.spo2,
-                    Temperature = input.temperature,
-                    SugarRandom = input.sugar_random,
-                    SugarFasting = input.sugar_fasting,
+                    BpSystolic = input.bp_systolic ?? 0,   // If null, assign 0
+                    BpDiastolic = input.bp_diastolic ?? 0,
+                    Weight = input.weight ?? 0,
+                    Spo2 = input.spo2 ?? 0,
+                    Temperature = input.temperature ?? 0,
+                    SugarRandom = input.sugar_random ?? 0,
+                    SugarFasting = input.sugar_fasting ?? 0,
                     Type = input.type,
                     Date = input.date,
                     Time = input.time
@@ -238,13 +238,13 @@ namespace SiwanDoctorAPI.AppServices.FamilyVitalsAppServices
             // Update the vital record fields
             vitalRecord.Date = request.date;
             vitalRecord.Time = request.time;
-            vitalRecord.BpSystolic = request.bp_systolic;
-            vitalRecord.BpDiastolic = request.bp_diastolic;
-            vitalRecord.Weight = request.weight;
-            vitalRecord.Spo2 = request.spo2;
-            vitalRecord.Temperature = request.temperature;
-            vitalRecord.SugarRandom = request.sugar_random;
-            vitalRecord.SugarFasting = request.sugar_fasting;
+            vitalRecord.BpSystolic = request.bp_systolic ?? 0;
+            vitalRecord.BpDiastolic = request.bp_diastolic ?? 0;
+            vitalRecord.Weight = request.weight ?? 0;
+            vitalRecord.Spo2 = request.spo2 ?? 0;
+            vitalRecord.Temperature = request.temperature ?? 0;
+            vitalRecord.SugarRandom = request.sugar_random ?? 0;
+            vitalRecord.SugarFasting = request.sugar_fasting ?? 0;
 
             // Save the changes to the database
             _applicationDbContext.familyMemberVitals.Update(vitalRecord);

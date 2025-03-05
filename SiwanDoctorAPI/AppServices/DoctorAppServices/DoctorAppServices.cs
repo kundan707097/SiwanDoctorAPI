@@ -103,9 +103,9 @@ namespace SiwanDoctorAPI.AppServices.DoctorAppServices
             doctor.TwitterLink = doctorDto.twitter_link;
             doctor.YouTubeLink = doctorDto.you_tube_link;
             doctor.InstagramLink = doctorDto.insta_link;
-            doctor.OpdFee = doctorDto.opd_fee;
-            doctor.VideoFee = doctorDto.video_fee;
-            doctor.EmergencyFee = doctorDto.emg_fee;
+            doctor.OpdFee = doctorDto.opd_fee ?? 0;
+            doctor.VideoFee = doctorDto.video_fee ?? 0;
+            doctor.EmergencyFee = doctorDto.emg_fee ?? 0;
 
             if (doctorDto.image != null)
             {

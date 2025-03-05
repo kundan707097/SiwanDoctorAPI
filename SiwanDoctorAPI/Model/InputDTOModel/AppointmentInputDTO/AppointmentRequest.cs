@@ -11,9 +11,9 @@
         public string? type { get; set; }
         public string? meeting_id { get; set; }
         public string? meeting_link { get; set; }
-        public decimal fee { get; set; }
-        public decimal service_charge { get; set; }
-        public decimal total_amount { get; set; }
+        public decimal? fee { get; set; }
+        public decimal? service_charge { get; set; }
+        public decimal? total_amount { get; set; }
         public string? invoice_description { get; set; }
         public string? payment_method { get; set; }
         public int user_id { get; set; }
