@@ -62,7 +62,7 @@ namespace SiwanDoctorAPI.Controllers
                 data = prescriptions
             });
         }
-        [HttpGet("{get_prescription_by_prescriptionId}")]
+        [HttpGet("get_prescription_by_prescriptionId")]
         public async Task<IActionResult> GetPrescription(int prescriptionId)
         {
             var prescription = await _patientPrescriptionAppServices.GetPrescriptionByIdAsync(prescriptionId);
@@ -74,7 +74,7 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(new { response = 200, data = prescription });
         }
 
-        [HttpGet("{Get_Data_By_Appointment_Id}")]
+        [HttpGet("Get_Data_By_Appointment_Id")]
         public async Task<IActionResult> GetPrescriptionByAppointmentId(int appointmentId)
         {
             var prescriptions = await _patientPrescriptionAppServices.GetPrescriptionsByAppointmentIdAsync(appointmentId);
