@@ -71,7 +71,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_vitals/{id}")]
-        public async Task<IActionResult> GetVitals(int id)
+        public async Task<IActionResult> GetVitals([FromForm] int id)
         {
             var vitals = await _familyVitalsAppServices.GetVitalsByIdAsync(id);
 
@@ -88,7 +88,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_vitals/user/{userId}")]
-        public async Task<IActionResult> GetVitalsByUser(int userId)
+        public async Task<IActionResult> GetVitalsByUser([FromForm] int userId)
         {
             // Fetch vitals data for the user from the service
             var vitals = await _familyVitalsAppServices.GetVitalsByUserIdAsync(userId);
@@ -110,7 +110,7 @@ namespace SiwanDoctorAPI.Controllers
 
 
         [HttpGet("get_vitals/family_member/{familyMemberId}")]
-        public async Task<IActionResult> GetVitalsByFamilyMember(int familyMemberId)
+        public async Task<IActionResult> GetVitalsByFamilyMember([FromForm] int familyMemberId)
         {
             // Fetch vitals data for the family member from the service
             var vitals = await _familyVitalsAppServices.GetVitalsByFamilyMemberIdAsync(familyMemberId);
@@ -132,10 +132,10 @@ namespace SiwanDoctorAPI.Controllers
 
         [HttpGet("get_vitals_family_member_id_type")]
         public async Task<ActionResult> GetVitalsByFamilyMemberAndType(
-            [FromQuery] int familyMemberId,
-            [FromQuery] string type,
-            [FromQuery] DateTime startDate,
-            [FromQuery] DateTime endDate)
+            [FromForm] int familyMemberId,
+            [FromForm] string type,
+            [FromForm] DateTime startDate,
+            [FromForm] DateTime endDate)
         {
             var vitals = await _familyVitalsAppServices.GetVitalsByFamilyMemberAndTypeAsync(familyMemberId, type, startDate, endDate);
             if (vitals == null || vitals.Count==0)

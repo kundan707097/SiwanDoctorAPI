@@ -72,7 +72,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_specialization/{id}")]
-        public async Task<IActionResult> GetSpecializationById(int id)
+        public async Task<IActionResult> GetSpecializationById([FromForm]  int id)
         {
             var specialization = await _specializationService.GetSpecializationByIdAsync(id);
 

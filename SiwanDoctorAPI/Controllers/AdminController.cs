@@ -24,10 +24,10 @@ namespace SiwanDoctorAPI.Controllers
 
         [HttpGet("GetAll_appointment")]
         public async Task<IActionResult> GetAppointments(
-         string? search,
-         int start,
-         int end,
-         string? status)
+         [FromForm] string? search,
+         [FromForm] int start,
+         [FromForm] int end,
+         [FromForm] string? status)
         {
             var appointments = await _adminAppServices.GetAppointmentsAsync(search, start, end, status);
 

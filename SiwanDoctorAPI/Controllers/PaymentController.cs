@@ -15,14 +15,14 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("create-order")]
-        public async Task<IActionResult> CreateOrder([FromBody] PaymentRequestModel model)
+        public async Task<IActionResult> CreateOrder([FromForm] PaymentRequestModel model)
         {
             var order = await _paymentAppServices.CreateOrderAsync(model);
             return Ok(order);
         }
 
         [HttpPost("verify-payment")]
-        public async Task<IActionResult> VerifyPayment([FromBody] PaymentVerificationModel model)
+        public async Task<IActionResult> VerifyPayment([FromForm] PaymentVerificationModel model)
         {
             var result = await _paymentAppServices.VerifyPaymentAsync(model);
             return Ok(result);

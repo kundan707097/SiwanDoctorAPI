@@ -42,7 +42,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_coupon/{id}")]
-        public async Task<IActionResult> GetCouponById(int id)
+        public async Task<IActionResult> GetCouponById([FromForm]  int id)
         {
             var result = await _couponAppService.GetCouponByIdAsync(id);
             if (result == null)

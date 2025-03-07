@@ -25,7 +25,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromForm] RegisterModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace SiwanDoctorAPI.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginInput loginRequest)
+        public async Task<IActionResult> Login([FromForm] LoginInput loginRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace SiwanDoctorAPI.Controllers
 
 
         [HttpPost("update_password")]
-        public async Task<IActionResult> UpdatePassword([FromBody] PatientUpdatePasswordModel model)
+        public async Task<IActionResult> UpdatePassword([FromForm] PatientUpdatePasswordModel model)
         {
             if (model == null || string.IsNullOrEmpty(model.user_id) || string.IsNullOrEmpty(model.password))
             {
@@ -102,7 +102,7 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(response);
         }
         [HttpPost("update-role")]
-        public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleRequest model)
+        public async Task<IActionResult> UpdateUserRole([FromForm] UpdateUserRoleRequest model)
         {
             if (string.IsNullOrEmpty(model.UserId) || string.IsNullOrEmpty(model.NewRole))
             {

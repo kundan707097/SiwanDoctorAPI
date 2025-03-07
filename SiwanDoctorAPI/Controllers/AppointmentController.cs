@@ -33,7 +33,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetAppointmentsByUser(int userId)
+        public async Task<IActionResult> GetAppointmentsByUser([FromForm] int userId)
         {
             var appointments = await _appointmentAppServices.GetAppointmentsByUserIdAsync(userId);
 
@@ -56,7 +56,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_appointment/{appointmentId}")]
-        public async Task<IActionResult> GetAppointment(int appointmentId)
+        public async Task<IActionResult> GetAppointment([FromForm] int appointmentId)
         {
             var appointment = await _appointmentAppServices.GetAppointmentById(appointmentId);
 
@@ -69,7 +69,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("update_appointment_status")]
-        public async Task<IActionResult> UpdateAppointmentStatus([FromBody] UpdateAppointmentStatus request)
+        public async Task<IActionResult> UpdateAppointmentStatus([FromForm] UpdateAppointmentStatus request)
         {
             var response = await _appointmentAppServices.UpdateAppointmentStatusById(request);
 
@@ -84,7 +84,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_appointment_date")]
-        public async Task<IActionResult> GetAppointmentDate([FromQuery] string start_date, [FromQuery] string end_date)
+        public async Task<IActionResult> GetAppointmentDate([FromForm] string start_date, [FromForm] string end_date)
         {
             if (DateTime.TryParse(start_date, out DateTime startDate) && DateTime.TryParse(end_date, out DateTime endDate))
             {
@@ -103,7 +103,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_appointments/{doctor_id}/page")]
-        public async Task<IActionResult> GetAppointmentsByPagination(int doctor_id, int start, int end)
+        public async Task<IActionResult> GetAppointmentsByPagination([FromForm]  int doctor_id, [FromForm] int start, [FromForm] int end)
         {
             if (start < 0 || end <= start)
             {

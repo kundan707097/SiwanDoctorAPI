@@ -35,7 +35,7 @@ namespace SiwanDoctorAPI.Controllers
             }
         }
         [HttpGet("get_user/{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser([FromForm] int id)
         {
             if (id <= 0)  // Validate ID
             {
@@ -60,7 +60,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_family_members/user/{userId}")]
-        public async Task<IActionResult> GetFamilyMembersByUser(int userId)
+        public async Task<IActionResult> GetFamilyMembersByUser([FromForm]  int userId)
         {
             var response = await _patientAppServices.GetFamilyMembersByUserAsync(userId);
 

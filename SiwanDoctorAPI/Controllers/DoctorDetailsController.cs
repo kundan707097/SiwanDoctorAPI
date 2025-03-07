@@ -22,7 +22,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpDelete("remove_doctor_image")]
-        public async Task<IActionResult> RemoveDoctorImage(int id)
+        public async Task<IActionResult> RemoveDoctorImage([FromForm] int id)
         {
             var result = await _doctorAppServices.RemoveDoctorImageAsync(id);
             return Ok(result);

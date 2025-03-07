@@ -82,7 +82,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_department/{id}")]
-        public async Task<IActionResult> GetDepartmentById(int id)
+        public async Task<IActionResult> GetDepartmentById([FromForm] int id)
         {
             var response = await _departmentAppServices.GetDepartmentByIdAsync(id);
             if (response.Data == null)
