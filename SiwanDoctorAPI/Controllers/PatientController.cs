@@ -60,7 +60,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_family_members/user/{userId}")]
-        public async Task<IActionResult> GetFamilyMembersByUser([FromForm]  int userId)
+        public async Task<IActionResult> GetFamilyMembersByUser(int userId)
         {
             var response = await _patientAppServices.GetFamilyMembersByUserAsync(userId);
 
