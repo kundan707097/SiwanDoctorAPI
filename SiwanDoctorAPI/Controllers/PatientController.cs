@@ -35,7 +35,7 @@ namespace SiwanDoctorAPI.Controllers
             }
         }
         [HttpGet("get_user/{id}")]
-        public async Task<IActionResult> GetUser([FromForm] int id)
+        public async Task<IActionResult> GetUser( int id)
         {
             if (id <= 0)  // Validate ID
             {
@@ -73,7 +73,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpDelete("delete_family_member")]
-        public async Task<IActionResult> DeleteFamilyMember([FromForm] int id)
+        public async Task<IActionResult> DeleteFamilyMember( int id)
         {
             var result = await _patientAppServices.DeleteFamilyMemberByIdAsync(id);
 

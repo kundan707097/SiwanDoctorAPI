@@ -82,7 +82,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_department/{id}")]
-        public async Task<IActionResult> GetDepartmentById([FromForm] int id)
+        public async Task<IActionResult> GetDepartmentById(int id)
         {
             var response = await _departmentAppServices.GetDepartmentByIdAsync(id);
             if (response.Data == null)
@@ -93,7 +93,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("delete_department")]
-        public async Task<IActionResult> DeleteDepartment([FromForm] int id)
+        public async Task<IActionResult> DeleteDepartment(int id)
         {
             var response = await _departmentAppServices.DeleteDepartmentAsync(id);
             return Ok(response);

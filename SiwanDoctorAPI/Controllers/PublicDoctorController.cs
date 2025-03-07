@@ -23,7 +23,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_doctor/{id}")]
-        public async Task<IActionResult> GetDoctorById([FromForm] int id)
+        public async Task<IActionResult> GetDoctorById( int id)
         {
             var result = await _publicDoctorAppServices.GetDoctorByIdAsync(id);
 
@@ -34,7 +34,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_doctor_time_slots/{doctorId}")]
-        public async Task<IActionResult> GetDoctorTimeSlots([FromForm]  int doctorId)
+        public async Task<IActionResult> GetDoctorTimeSlots(  int doctorId)
         {
             var timeSlots = await _publicDoctorAppServices.GetDoctorTimeSlotsAsync(doctorId);
 
@@ -51,7 +51,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_doctor_time_interval/{doctorId}/{day}")]
-        public async Task<IActionResult> GetDoctorTimeIntervals([FromForm] int doctorId, [FromForm] string day)
+        public async Task<IActionResult> GetDoctorTimeIntervals( int doctorId, string day)
         {
             var timeIntervals = await _publicDoctorAppServices.GetDoctorTimeIntervalsAsync(doctorId, day);
 
@@ -64,7 +64,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_doctor_video_time_slots/{doctorId}")]
-        public async Task<IActionResult> GetDoctorVideoTimeSlots([FromForm]  int doctorId)
+        public async Task<IActionResult> GetDoctorVideoTimeSlots( int doctorId)
         {
             var serviceResponse = await _publicDoctorAppServices.GetDoctorVideoTimeSlotsAsync(doctorId);
             if (serviceResponse == null || !serviceResponse.Any())
@@ -80,7 +80,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_doctor_videotime_interval/{doctorId}/{day}")]
-        public async Task<IActionResult> GetDoctorVideoTimeIntervals([FromForm] int doctorId, [FromForm] string day)
+        public async Task<IActionResult> GetDoctorVideoTimeIntervals( int doctorId,  string day)
         {
             var videoTimeIntervals = await _publicDoctorAppServices.GetVideoDoctorTimeIntervalAsync(doctorId, day);
             if (videoTimeIntervals == null || !videoTimeIntervals.Any())

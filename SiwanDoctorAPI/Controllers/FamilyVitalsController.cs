@@ -132,10 +132,10 @@ namespace SiwanDoctorAPI.Controllers
 
         [HttpGet("get_vitals_family_member_id_type")]
         public async Task<ActionResult> GetVitalsByFamilyMemberAndType(
-            [FromForm] int familyMemberId,
-            [FromForm] string type,
-            [FromForm] DateTime startDate,
-            [FromForm] DateTime endDate)
+            int familyMemberId,
+            string type,
+             DateTime startDate,
+             DateTime endDate)
         {
             var vitals = await _familyVitalsAppServices.GetVitalsByFamilyMemberAndTypeAsync(familyMemberId, type, startDate, endDate);
             if (vitals == null || vitals.Count==0)

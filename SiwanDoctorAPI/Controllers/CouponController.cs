@@ -42,7 +42,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_coupon/{id}")]
-        public async Task<IActionResult> GetCouponById([FromForm]  int id)
+        public async Task<IActionResult> GetCouponById(int id)
         {
             var result = await _couponAppService.GetCouponByIdAsync(id);
             if (result == null)
@@ -52,13 +52,13 @@ namespace SiwanDoctorAPI.Controllers
             return Ok(result);
         }
         [HttpPost("get_validate")]
-        public async Task<IActionResult> ValidateCoupon([FromForm] string title, [FromForm] int user_id)
+        public async Task<IActionResult> ValidateCoupon(string title, int user_id)
         {
             var result = await _couponAppService.ValidateCouponAsync(title, user_id);
             return Ok(result);
         }
         [HttpPost("delete_coupon")]
-        public async Task<IActionResult> DeleteCoupon([FromForm] int id)
+        public async Task<IActionResult> DeleteCoupon(int id)
         {
             var result = await _couponAppService.DeleteCouponAsync(id);
             return Ok(result);

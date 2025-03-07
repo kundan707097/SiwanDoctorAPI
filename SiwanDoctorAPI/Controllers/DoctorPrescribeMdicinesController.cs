@@ -32,7 +32,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_prescribe_medicines_ByDoctorId")]
-        public async Task<IActionResult> GetPrescribedMedicinesByDoctorId([FromQuery] int doct_id)
+        public async Task<IActionResult> GetPrescribedMedicinesByDoctorId( int doct_id)
         {
             if (doct_id <= 0)
             {
@@ -54,7 +54,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("update_prescribe_medicines")]
-        public async Task<IActionResult> UpdatePrescribedMedicines([FromForm] int id, [FromForm] string title, [FromForm] string notes)
+        public async Task<IActionResult> UpdatePrescribedMedicines(int id, string title,  string notes)
         {
             // Check for invalid or missing parameters
             if (id <= 0 || string.IsNullOrEmpty(title) || string.IsNullOrEmpty(notes))
@@ -79,7 +79,7 @@ namespace SiwanDoctorAPI.Controllers
             });
         }
         [HttpPost("delete_prescribe_medicines")]
-        public async Task<IActionResult> DeletePrescribedMedicine([FromForm] int id)
+        public async Task<IActionResult> DeletePrescribedMedicine(int id)
         {
             // Check if the id is valid
             if (id <= 0)

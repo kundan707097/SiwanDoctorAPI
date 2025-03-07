@@ -25,7 +25,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("doctor/{doctorId}")]
-        public async Task<IActionResult> GetDoctorReviews([FromForm] int doctorId)
+        public async Task<IActionResult> GetDoctorReviews(int doctorId)
         {
             var response = await _doctorReviewAppServices.GetDoctorReviewsAsync(doctorId);
             return Ok(response);

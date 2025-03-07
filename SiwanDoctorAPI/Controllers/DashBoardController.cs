@@ -15,7 +15,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("DashBoard/doctor/{doctorId}")]
-        public async Task<IActionResult> GetDashboardCountByDoctorId([FromForm] int doctorId)
+        public async Task<IActionResult> GetDashboardCountByDoctorId( int doctorId)
         {
             var result = await _dashboardAppService.GetDashboardCountAsync(doctorId);
             return Ok(new { response = 200, data = result });

@@ -63,7 +63,7 @@ namespace SiwanDoctorAPI.Controllers
             });
         }
         [HttpGet("get_prescription_by_prescriptionId")]
-        public async Task<IActionResult> GetPrescription([FromForm] int prescriptionId)
+        public async Task<IActionResult> GetPrescription(int prescriptionId)
         {
             var prescription = await _patientPrescriptionAppServices.GetPrescriptionByIdAsync(prescriptionId);
             if (prescription == null)
@@ -75,7 +75,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("Get_Data_By_Appointment_Id")]
-        public async Task<IActionResult> GetPrescriptionByAppointmentId([FromForm]  int appointmentId)
+        public async Task<IActionResult> GetPrescriptionByAppointmentId(int appointmentId)
         {
             var prescriptions = await _patientPrescriptionAppServices.GetPrescriptionsByAppointmentIdAsync(appointmentId);
 
@@ -88,7 +88,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpPost("delete_prescription")]
-        public async Task<IActionResult> DeletePrescription([FromForm] int id)
+        public async Task<IActionResult> DeletePrescription(int id)
         {
             var result = await _patientPrescriptionAppServices.DeletePrescriptionAsync(id);
             return StatusCode(result.response, result);
@@ -102,7 +102,7 @@ namespace SiwanDoctorAPI.Controllers
         }
 
         [HttpGet("get_prescription/doctor/{doctorId}")]
-        public async Task<IActionResult> GetPrescriptionsByDoctorId([FromForm] int doctorId)
+        public async Task<IActionResult> GetPrescriptionsByDoctorId(int doctorId)
         {
             var response = await _patientPrescriptionAppServices.GetPrescriptionsByDoctorAsync(doctorId);
             return Ok(new
@@ -112,7 +112,7 @@ namespace SiwanDoctorAPI.Controllers
             });
         }
         [HttpGet("get_prescription/User/{userId}")]
-        public async Task<IActionResult> GetPatientPrescriptionsByUserId([FromForm] int userId)
+        public async Task<IActionResult> GetPatientPrescriptionsByUserId(int userId)
         {
             var response = await _patientPrescriptionAppServices.GetPatientPrescriptionsByUserIdAsync(userId);
             return Ok( new
@@ -122,7 +122,7 @@ namespace SiwanDoctorAPI.Controllers
             });
         }
         [HttpGet("get_prescription/Patient/{PatientId}")]
-        public async Task<IActionResult> GetPatientPrescriptionsByPatientId([FromForm] int PatientId)
+        public async Task<IActionResult> GetPatientPrescriptionsByPatientId(int PatientId)
         {
             var response = await _patientPrescriptionAppServices.GetPatientPrescriptionsByPatientIdAsync(PatientId);
             return Ok(new
