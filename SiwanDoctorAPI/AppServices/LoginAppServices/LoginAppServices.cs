@@ -27,7 +27,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
 
         public async Task<LoginResponse> LoginAsync(LoginInput loginRequest)
         {
-            var user = await _userManager.FindByNameAsync(loginRequest.emailOrPhoneNumber);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == loginRequest.emailOrPhoneNumber);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginRequest.password))
             {
@@ -161,7 +161,7 @@ namespace SiwanDoctorAPI.AppServices.LoginAppServices
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(phoneNumber);
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
                 if (user == null)
                 {
                     return new LoginResponse
