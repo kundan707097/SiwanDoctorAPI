@@ -284,7 +284,7 @@ namespace SiwanDoctorAPI.AppServices.PatientAppServices
                     Isd_Code = request.isd_code,
                     User_Id = request.user_id,
                     Gender = request.gender,
-                    Dob = request.dob
+                    Dob = request.dob ?? DateTime.MinValue // Provide a default value
                 };
 
                 // Save to database

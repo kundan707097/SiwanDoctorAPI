@@ -8,6 +8,6 @@
         public string? isd_code { get; set; } // ISD Code
         public int user_id { get; set; } // User ID
         public string? gender { get; set; } // Gender
-        public DateTime dob { get; set; } // Date of Birth
+        public DateTime? dob { get; set; } // Date of Birth
     }
 }
