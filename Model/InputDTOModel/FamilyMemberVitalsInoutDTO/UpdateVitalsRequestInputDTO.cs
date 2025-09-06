@@ -1,0 +1,17 @@
+﻿namespace SiwanDoctorAPI.Model.InputDTOModel.FamilyMemberVitalsInoutDTO
+{
+    public class UpdateVitalsRequestInputDTO
+    {
+        public int id { get; set; }
+        public string? date { get; set; }
+        public string? time { get; set; }
+        public int? bp_systolic { get; set; }
+        public int? bp_diastolic { get; set; }
+        public int? weight { get; set; }
+        public int? spo2 { get; set; }
+        public int? temperature { get; set; }
+        public int? sugar_random { get; set; }
+        public int? sugar_fasting { get; set; }
+        
+    }
+}

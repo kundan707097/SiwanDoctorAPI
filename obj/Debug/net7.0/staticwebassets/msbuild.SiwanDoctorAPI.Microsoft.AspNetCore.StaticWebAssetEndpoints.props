@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/SiwanDoctorAPI/uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.cacy4h7une.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\4\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"cacy4h7une"},{"Name":"integrity","Value":"sha256-TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88="},{"Name":"label","Value":"_content/SiwanDoctorAPI/uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"39328"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=\u0022"},{"Name":"Last-Modified","Value":"Sat, 01 Feb 2025 13:43:37 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/SiwanDoctorAPI/uploads/4/86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\4\86376239-76a0-4972-a295-e314b348701f_Kundan_Kumar_Image.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"39328"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022TDUYiG4aXvDQFzQau5hS8B5d2SOegmuT6SF9pbnFl88=\u0022"},{"Name":"Last-Modified","Value":"Sat, 01 Feb 2025 13:43:37 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
