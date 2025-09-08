@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI-aditya-api\\",
+  "WorkspaceRootPath": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{19B18C56-88D4-4579-B415-5A757BDA4E23}|SiwanDoctorAPI.csproj|d:\\doctorapis\\siwandoctorapi-aditya-api\\siwandoctorapi-aditya-api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{19B18C56-88D4-4579-B415-5A757BDA4E23}|SiwanDoctorAPI.csproj|d:\\doctorapis\\siwandoctorapi-aditya-api\\siwandoctorapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{19B18C56-88D4-4579-B415-5A757BDA4E23}|SiwanDoctorAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
@@ -36,9 +36,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI-aditya-api\\appsettings.json",
+              "DocumentMoniker": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI-aditya-api\\appsettings.json",
+              "ToolTip": "D:\\DoctorAPIs\\SiwanDoctorAPI-aditya-api\\SiwanDoctorAPI\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
